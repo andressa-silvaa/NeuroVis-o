@@ -1,0 +1,10 @@
+*{
+  margin:0;
+  padding:0;
+}
+.container-fluid {
+  height: 100vh!important;
+}
+.barra-vertical{
+  background-color: #2A492B;
+}
