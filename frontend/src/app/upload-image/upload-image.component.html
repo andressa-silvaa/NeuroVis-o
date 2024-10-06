@@ -1,24 +1,41 @@
   <div class="container-fluid h-100">
     <div class="row h-100">
-      <div class="col-md-2 text-white d-flex flex-column justify-content-between p-3 barra-vertical">
-        <div class="menu">
-          <div class="menu-item mb-3">
-             <img src="assets/img/dashIcon.png" alt="Ícone" class="img-fluid"> Dashboard
+      <div class="col-md-2 text-white d-flex flex-column justify-content-between barra-vertical">
+        <div class="menu w-100">
+          <div class="dashboard p-2">
+             <p><img src="assets/img/dashIcon.png" alt="Ícone" class="img-fluid"> Dashboard</p>
           </div>
-          <div class="menu-item mb-3 active">
-            <i class="fa fa-upload"></i> Upload de Imagens
+          <div class="menu-item p-2 active">
+            <p><img src="assets/img/imageIcon.png" alt="Ícone"> Upload de Imagens</p>
           </div>
         </div>
-        <div class="logout">
-          <a href="#" class="text-white">Sair</a>
+        <div class="logout d-flex justify-content-center p-2">
+          <a href="" class="text-white" style="text-decoration: underline;">Sair</a>
         </div>
       </div>
-      <div class="col-md-10 bg-light d-flex flex-column justify-content-center align-items-center">
-        <h1 class="mb-5 text-success">Processamento de imagens</h1>
-        <div class="border border-dark rounded p-5 d-flex flex-column justify-content-center align-items-center" style="width: 50%; height: 300px; cursor: pointer;">
-          <i class="fa fa-folder-open fa-3x text-success mb-3"></i>
-          <span class="text-success">Carregar arquivo</span>
-        </div>
+      <div class="col-md-10 d-flex flex-column align-items-center principal" style="background-color: #90B290; height: 100vh;">
+        <div class="header-container position-relative w-100">
+          <img *ngIf="imagemSrc" src="assets/img/voltarIcon.png" alt="Botão de voltar" class="voltar-icon" (click)="resetFileInput()">
+          <h1 class="text-center w-100">Processamento de imagens</h1>
+        </div>     
+        <div class="d-flex flex-column flex-grow-1 w-100 justify-content-center align-items-center">
+          <div class="d-flex flex-column justify-content-center align-items-center upload"
+               (click)="triggerFileUpload()" 
+               [ngStyle]="{'border': imagemSrc ? '2px solid #518D53' : '2px dashed #518D53'}">
+            <img *ngIf="imagemSrc" [src]="imagemSrc" alt="Imagem carregada" class="img-preview">
+            <img *ngIf="!imagemSrc" src="assets/img/folder-plus.png" alt="Folder">
+            <p *ngIf="!imagemSrc">Carregar arquivo</p>
+            <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;">
+          </div>
+          <div *ngIf="imagemSrc" class="d-flex justify-content-between w-50 button-container mt-4">
+            <button class="p-2 btn-processamento">Analisar objeto</button>
+            <button class="p-2 btn-processamento">Analisar composição</button>
+          </div>
+        </div>         
       </div>
+      
+      
+      
     </div>
   </div>
+  <app-modal></app-modal>
