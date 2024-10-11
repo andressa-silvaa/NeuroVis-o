@@ -67,7 +67,7 @@ class ImageProcessor:
                 annotation['YMax'] = (
                     annotation['YMax'] * original_h) / target_size[0]
 
-        # Aplicar outras etapas de pré-processamento, como equalização de histograma, remoção de ruído, etc.
+        # Aplicar outras etapas de pré-processamento
         if self.is_grayscale(img_resized):
             img_resized = cv2.cvtColor(img_resized, cv2.COLOR_GRAY2BGR)
 
