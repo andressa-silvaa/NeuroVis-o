@@ -12,8 +12,16 @@ class ImageProcessor:
         self.root = Tk()
         self.root.title("Image Preprocessing")
         self.root.geometry("300x200")
-        self.processing_label = Label(self.root, text="")
+
+        # Frame para o label de processamento
+        self.processing_frame = Frame(self.root)
+        self.processing_frame.pack(pady=10)
+
+        # Ajusta o comprimento da linha
+        self.processing_label = Label(
+            self.processing_frame, text="", wraplength=280)
         self.processing_label.pack(pady=10)
+
         btn_select = Button(self.root, text="Select Image",
                             command=self.select_image)
         btn_select.pack(pady=20)
@@ -34,6 +42,8 @@ class ImageProcessor:
 
     @staticmethod
     def calculate_contrast(img):
+        if img.dtype != np.uint8:
+            img = img.astype(np.uint8)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         contrast = gray.max() - gray.min()
         return contrast
@@ -48,48 +58,45 @@ class ImageProcessor:
     def apply_edge_detection(img):
         return cv2.Canny(img, 100, 200)
 
-    def preprocess_image(self, img, annotations=None):
-        original_h, original_w = img.shape[:2]
+    def preprocess_image(self, img):
         target_size = (800, 800)
 
-        # Redimensiona a imagem para 800x800
+        # Resize the image to 800x800
         img_resized = cv2.resize(img, target_size)
 
-        # Ajustar as anotações (se fornecidas)
-        if annotations:
-            for annotation in annotations:
-                annotation['XMin'] = (
-                    annotation['XMin'] * original_w) / target_size[1]
-                annotation['XMax'] = (
-                    annotation['XMax'] * original_w) / target_size[1]
-                annotation['YMin'] = (
-                    annotation['YMin'] * original_h) / target_size[0]
-                annotation['YMax'] = (
-                    annotation['YMax'] * original_h) / target_size[0]
+        # Ensure the image is of type uint8
+        img_resized = img_resized.astype(np.uint8)
 
-        # Aplicar outras etapas de pré-processamento
+        # Apply preprocessing steps
         if self.is_grayscale(img_resized):
             img_resized = cv2.cvtColor(img_resized, cv2.COLOR_GRAY2BGR)
 
+        # Se a imagem for muito escura, aplique a equalização de histograma
         if self.is_too_dark(img_resized):
             img_resized = self.apply_histogram_equalization(img_resized)
 
+        # Se a imagem for ruidosa, aplique a denoising
         if self.is_noisy(img_resized):
             img_resized = denoise_bilateral(
-                img_resized, sigma_color=0.01, sigma_spatial=5, channel_axis=-1)
+                img_resized, sigma_color=0.1, sigma_spatial=15, channel_axis=-1)
+            # Converta para uint8
+            img_resized = (img_resized * 255).astype(np.uint8)
 
         contrast = self.calculate_contrast(img_resized)
+        # Aumente o contraste apenas se for necessário
         if contrast < 50:
-            img_resized = cv2.convertScaleAbs(img_resized, alpha=1.5, beta=0)
+            img_resized = cv2.convertScaleAbs(img_resized, alpha=1.2, beta=10)
 
+        # Apply sharpening filter
         kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
         img_resized = cv2.filter2D(src=img_resized, ddepth=-1, kernel=kernel)
 
-        return img_resized, annotations if annotations else None
+        return img_resized
 
     @staticmethod
     def save_image(img, path):
-        cv2.imwrite(path, img)
+        if not cv2.imwrite(path, img):
+            print(f"Erro ao salvar a imagem processada: {path}")
 
     def select_image(self):
         filepath = filedialog.askopenfilename(
@@ -107,14 +114,13 @@ class ImageProcessor:
         self.root.update()
 
         try:
-            # Exemplo de anotação. No seu caso, você leria do arquivo correspondente à imagem.
-            annotations = [
-                {'XMin': 0.1, 'XMax': 0.5, 'YMin': 0.2, 'YMax': 0.6},
-                {'XMin': 0.3, 'XMax': 0.7, 'YMin': 0.4, 'YMax': 0.8}
-            ]
+            processed_img = self.preprocess_image(img)
 
-            processed_img, updated_annotations = self.preprocess_image(
-                img, annotations)
+            # Verifica se a imagem processada não está vazia
+            if processed_img is None or np.sum(processed_img) == 0:
+                messagebox.showerror("Error", "Processed image is empty!")
+                self.processing_label.config(text="")
+                return
 
             self.display_image(img, "Original Image")
             self.display_image(processed_img, "Processed Image")
@@ -122,8 +128,7 @@ class ImageProcessor:
             save_path = os.path.join(os.path.expanduser(
                 "~"), "Downloads", "processed_image.jpg")
             self.save_image(processed_img, save_path)
-            print(f"Imagem processada salva em: {save_path}")
-            print("Novas anotações:", updated_annotations)
+            print(f"Processed image saved at: {save_path}")
 
             self.processing_label.config(text="Image processed successfully!")
 
