@@ -54,44 +54,64 @@ class ImageProcessor:
         img_yuv[:, :, 0] = cv2.equalizeHist(img_yuv[:, :, 0])
         return cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)
 
-    @staticmethod
-    def apply_edge_detection(img):
-        return cv2.Canny(img, 100, 200)
+    def improve_image_quality(self, img):
+        # Ajusta brilho e contraste de maneira leve
+        alpha = 1.1  # Fator de ganho de contraste ajustado
+        beta = 5     # Fator de brilho suavizado
+        img = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
+        return img
 
     def preprocess_image(self, img):
         target_size = (800, 800)
+        original_height, original_width = img.shape[:2]
 
-        # Resize the image to 800x800
-        img_resized = cv2.resize(img, target_size)
+        if original_width < 800 and original_height < 800:
+            # Manter a imagem original e preencher com fundo preto
+            new_img = np.zeros((800, 800, 3), dtype=np.uint8)  # Fundo preto
+            y_offset = (800 - original_height) // 2
+            x_offset = (800 - original_width) // 2
+            new_img[y_offset:y_offset + original_height,
+                    x_offset:x_offset + original_width] = img
 
-        # Ensure the image is of type uint8
-        img_resized = img_resized.astype(np.uint8)
+            # Aplicar pré-processamento para imagens menores que 800x800
+            if self.is_too_dark(new_img):
+                new_img = self.apply_histogram_equalization(new_img)
 
-        # Apply preprocessing steps
-        if self.is_grayscale(img_resized):
-            img_resized = cv2.cvtColor(img_resized, cv2.COLOR_GRAY2BGR)
+            if self.is_noisy(new_img):
+                new_img = denoise_bilateral(
+                    new_img, sigma_color=0.1, sigma_spatial=15, channel_axis=-1)
+                new_img = (new_img * 255).astype(np.uint8)
 
-        # Se a imagem for muito escura, aplique a equalização de histograma
-        if self.is_too_dark(img_resized):
-            img_resized = self.apply_histogram_equalization(img_resized)
+            new_img = self.improve_image_quality(new_img)
 
-        # Se a imagem for ruidosa, aplique a denoising
-        if self.is_noisy(img_resized):
-            img_resized = denoise_bilateral(
-                img_resized, sigma_color=0.1, sigma_spatial=15, channel_axis=-1)
-            # Converta para uint8
-            img_resized = (img_resized * 255).astype(np.uint8)
+            # Diminuir a luminosidade
+            # Fator de ganho de contraste (menor que 1 para diminuir a luminosidade)
+            alpha = 0.95
+            beta = -5     # Subtraindo um valor do brilho suavizado
+            new_img = cv2.convertScaleAbs(new_img, alpha=alpha, beta=beta)
 
-        contrast = self.calculate_contrast(img_resized)
-        # Aumente o contraste apenas se for necessário
-        if contrast < 50:
-            img_resized = cv2.convertScaleAbs(img_resized, alpha=1.2, beta=10)
+            # Aumentar a nitidez com um kernel ainda mais suave
+            kernel = np.array(
+                [[0, -0.15, 0], [-0.15, 1.5, -0.15], [0, -0.15, 0]])
+            new_img = cv2.filter2D(src=new_img, ddepth=-1, kernel=kernel)
 
-        # Apply sharpening filter
-        kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-        img_resized = cv2.filter2D(src=img_resized, ddepth=-1, kernel=kernel)
+        else:
+            # Redimensionar a imagem para 800x800
+            new_img = cv2.resize(img, target_size)
 
-        return img_resized
+            # Aplicar etapas de pré-processamento para imagens maiores
+            if self.is_grayscale(new_img):
+                new_img = cv2.cvtColor(new_img, cv2.COLOR_GRAY2BGR)
+
+            contrast = self.calculate_contrast(new_img)
+            if contrast < 50:
+                new_img = cv2.convertScaleAbs(new_img, alpha=1.2, beta=10)
+
+            # Aplicar um filtro de nitidez
+            kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+            new_img = cv2.filter2D(src=new_img, ddepth=-1, kernel=kernel)
+
+        return new_img
 
     @staticmethod
     def save_image(img, path):
@@ -100,7 +120,7 @@ class ImageProcessor:
 
     def select_image(self):
         filepath = filedialog.askopenfilename(
-            filetypes=[("Image files", "*.jpg;*.jpeg;*.png;*.bmp")])
+            filetypes=[("Image files", ".jpg;.jpeg;.png;.bmp")])
         if not filepath:
             return
 

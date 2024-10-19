@@ -1,88 +1,64 @@
 import os
 import cv2
+import pandas as pd
 
 # Diretórios
 processed_image_dir = r"E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed"
+annotations_csv_path = r"E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed-csv\\annotations_corrected.csv"
 
 
-def load_annotations(annotation_path):
-    annotations = []
-
-    # Verifique se o arquivo de anotações existe
-    if not os.path.exists(annotation_path):
-        print(f"Annotation file not found: {annotation_path}")
-        return annotations
-
-    with open(annotation_path, 'r') as f:
-        for line in f.readlines():
-            parts = line.strip().split(' ')
-            if len(parts) >= 5:
-                class_name = parts[0]  # Nome da classe
-                try:
-                    # Ler coordenadas como floats
-                    x_min = float(parts[1])
-                    y_min = float(parts[2])
-                    x_max = float(parts[3])
-                    y_max = float(parts[4])
-
-                    # Adicionar as coordenadas já na escala de pixels
-                    annotations.append({
-                        'LabelName': class_name,
-                        'XMin': int(x_min),
-                        'YMin': int(y_min),
-                        'XMax': int(x_max),
-                        'YMax': int(y_max)
-                    })
-                except ValueError as e:
-                    print(f"Error parsing line: {line.strip()} - {e}")
-            else:
-                print(f"Invalid annotation line: {line.strip()}")
-
-    return annotations
+def load_annotations_from_csv(csv_path):
+    # Tentar diferentes codificações
+    for encoding in ['utf-8', 'ISO-8859-1', 'cp1252']:
+        try:
+            df = pd.read_csv(csv_path, encoding=encoding)
+            print(f"Successfully read CSV file with encoding: {encoding}")
+            return df
+        except Exception as e:
+            print(f"Failed with encoding {encoding}: {e}")
+    return None
 
 
 def draw_annotations(image, annotations):
-    for annotation in annotations:
+    for _, annotation in annotations.iterrows():
         # Desenhar retângulo em torno do objeto
-        cv2.rectangle(image, (annotation['XMin'], annotation['YMin']),
-                      (annotation['XMax'], annotation['YMax']), (0, 255, 0), 2)
-        # Opcional: colocar o texto da classe acima do retângulo
-        cv2.putText(image, annotation['LabelName'], (annotation['XMin'], annotation['YMin'] - 10),
+        cv2.rectangle(image, (int(annotation['xmin']), int(annotation['ymin'])),
+                      (int(annotation['xmax']), int(annotation['ymax'])), (0, 255, 0), 2)
+        # Colocar o texto da classe acima do retângulo
+        cv2.putText(image, annotation['label'], (int(annotation['xmin']), int(annotation['ymin']) - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
 
-def visualize_images():
-    for filename in os.listdir(processed_image_dir):
-        if filename.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp')):
-            img_path = os.path.join(processed_image_dir, filename)
-            annotation_path = img_path.replace(filename.split('.')[-1], 'txt')
+def visualize_images(annotations):
+    for _, annotation in annotations.iterrows():
+        img_filename = annotation['image']
+        img_path = os.path.join(processed_image_dir, img_filename)
 
-            # Carregar a imagem
-            image = cv2.imread(img_path)
-            if image is None:
-                print(f"Error loading image: {img_path}")
-                continue
+        # Carregar a imagem
+        image = cv2.imread(img_path)
+        if image is None:
+            print(f"Error loading image: {img_path}")
+            continue
 
-            # Carregar as anotações
-            annotations = load_annotations(annotation_path)
-            if not annotations:
-                print(f"No annotations found for {filename}")
-                continue
+        # Criar um DataFrame com as anotações correspondentes à imagem
+        img_annotations = annotations[annotations['image'] == img_filename]
 
-            # Desenhar as anotações na imagem
-            draw_annotations(image, annotations)
+        # Desenhar as anotações na imagem
+        draw_annotations(image, img_annotations)
 
-            # Mostrar a imagem com as anotações
-            cv2.imshow(f'Annotated Image: {filename}', image)
+        # Mostrar a imagem com as anotações
+        cv2.imshow(f'Annotated Image: {img_filename}', image)
 
-            # Aguarde até que uma tecla seja pressionada
-            key = cv2.waitKey(0)
-            if key == 27:  # Pressione ESC para sair
-                break
+        # Aguarde até que uma tecla seja pressionada
+        key = cv2.waitKey(0)
+        if key == 27:  # Pressione ESC para sair
+            break
 
     # Fechar todas as janelas após exibir todas as imagens
     cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    visualize_images()
+    annotations = load_annotations_from_csv(annotations_csv_path)
+    if annotations is not None:
+        visualize_images(annotations)
