@@ -85,12 +85,11 @@ class ImageProcessor:
             new_img = self.improve_image_quality(new_img)
 
             # Diminuir a luminosidade
-            # Fator de ganho de contraste (menor que 1 para diminuir a luminosidade)
             alpha = 0.95
-            beta = -5     # Subtraindo um valor do brilho suavizado
+            beta = -5
             new_img = cv2.convertScaleAbs(new_img, alpha=alpha, beta=beta)
 
-            # Aumentar a nitidez com um kernel ainda mais suave
+            # Aumentar a nitidez com um kernel suave
             kernel = np.array(
                 [[0, -0.15, 0], [-0.15, 1.5, -0.15], [0, -0.15, 0]])
             new_img = cv2.filter2D(src=new_img, ddepth=-1, kernel=kernel)
