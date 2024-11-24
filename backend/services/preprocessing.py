@@ -62,55 +62,52 @@ class ImageProcessor:
         return img
 
     def preprocess_image(self, img):
-        target_size = (800, 800)
+        # Tamanho desejado para a imagem
+        target_size = (640, 640)
         original_height, original_width = img.shape[:2]
 
-        if original_width < 800 and original_height < 800:
-            # Manter a imagem original e preencher com fundo preto
-            new_img = np.zeros((800, 800, 3), dtype=np.uint8)  # Fundo preto
-            y_offset = (800 - original_height) // 2
-            x_offset = (800 - original_width) // 2
+        # Se a imagem for menor que 640x640, coloca ela centralizada em um fundo preto
+        if original_height < 640 or original_width < 640:
+            new_img = np.zeros((640, 640, 3), dtype=np.uint8)  # Fundo preto
+            x_offset = (target_size[0] - original_width) // 2
+            y_offset = (target_size[1] - original_height) // 2
             new_img[y_offset:y_offset + original_height,
                     x_offset:x_offset + original_width] = img
-
-            # Aplicar pré-processamento para imagens menores que 800x800
-            if self.is_too_dark(new_img):
-                new_img = self.apply_histogram_equalization(new_img)
-
-            if self.is_noisy(new_img):
-                new_img = denoise_bilateral(
-                    new_img, sigma_color=0.1, sigma_spatial=15, channel_axis=-1)
-                new_img = (new_img * 255).astype(np.uint8)
-
-            new_img = self.improve_image_quality(new_img)
-
-            # Diminuir a luminosidade
-            alpha = 0.95
-            beta = -5
-            new_img = cv2.convertScaleAbs(new_img, alpha=alpha, beta=beta)
-
-            # Aumentar a nitidez com um kernel suave
-            kernel = np.array(
-                [[0, -0.15, 0], [-0.15, 1.5, -0.15], [0, -0.15, 0]])
-            new_img = cv2.filter2D(src=new_img, ddepth=-1, kernel=kernel)
-
+            img = new_img
         else:
-            # Redimensionar a imagem para 800x800
-            new_img = cv2.resize(img, target_size)
+            img = cv2.resize(img, target_size)  # Redimensiona para 640x640
 
-            # Aplicar etapas de pré-processamento para imagens maiores
-            if self.is_grayscale(new_img):
-                new_img = cv2.cvtColor(new_img, cv2.COLOR_GRAY2BGR)
+        # Aplicar pré-processamento para qualquer imagem
+        if self.is_too_dark(img):
+            img = self.apply_histogram_equalization(img)
 
-            contrast = self.calculate_contrast(new_img)
-            if contrast < 50:
-                new_img = cv2.convertScaleAbs(new_img, alpha=1.2, beta=10)
+        if self.is_noisy(img):
+            img = denoise_bilateral(
+                img, sigma_color=0.05, sigma_spatial=10, channel_axis=-1)  # Reduzir o efeito de ruído
+            img = (img * 255).astype(np.uint8)
 
-            # Aplicar um filtro de nitidez
-            kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-            new_img = cv2.filter2D(src=new_img, ddepth=-1, kernel=kernel)
+        img = self.improve_image_quality(img)
 
-        return new_img
+        # Diminuir a luminosidade de maneira suave
+        alpha = 0.95
+        beta = -5
+        img = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
+
+        # Aumentar a nitidez com um kernel suave
+        kernel = np.array(
+            [[0, -0.05, 0], [-0.05, 1.1, -0.05], [0, -0.05, 0]])  # Kernel mais suave
+        img = cv2.filter2D(src=img, ddepth=-1, kernel=kernel)
+
+        # Segmentação com limiarização adaptativa (para manter a imagem colorida)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.adaptiveThreshold(
+            gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+        segmented_img = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
+
+        # Combine a imagem segmentada com a original
+        img = cv2.bitwise_and(img, segmented_img)
+
+        return img
 
     @staticmethod
     def save_image(img, path):

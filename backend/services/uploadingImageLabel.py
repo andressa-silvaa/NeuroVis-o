@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 import cv2
 from pathlib import Path
 from preprocessing import ImageProcessor
@@ -54,36 +55,37 @@ class UploadingImageLabel:
                         print(f"Erro ao carregar a imagem: {image_path}")
                         continue
 
-                    # Processa a imagem
-                    processed_img = self.image_processor.preprocess_image(img)
+                    # Processa a imagem (já redimensionada para 640x640)
+                    img_resized = cv2.resize(img, (640, 640))
+                    processed_img = self.image_processor.preprocess_image(
+                        img_resized)
                     processed_image_path = os.path.join(
                         self.processed_images_dir, image_name)
                     cv2.imwrite(processed_image_path, processed_img)
 
                     # Armazena a imagem no cache
-                    self.image_cache[image_name] = img
+                    self.image_cache[image_name] = img_resized
                     processed_images.add(image_name)
 
-                # Aqui garantimos que todos os labels para a mesma imagem sejam processados
+                # Ajusta as coordenadas das labels para a nova dimensão de 640x640
                 original_height, original_width = img.shape[:2]
-                new_height, new_width = 800, 800
+                new_height, new_width = 640, 640
 
-                # Se a imagem é menor que 800x800
-                if original_height < 800 and original_width < 800:
-                    y_offset = (new_height - original_height) // 2
-                    x_offset = (new_width - original_width) // 2
+                # Redimensiona as coordenadas das labels
+                new_xmin = max(
+                    0, min(row['xmin'] * (new_width / original_width), new_width))
+                new_ymin = max(
+                    0, min(row['ymin'] * (new_height / original_height), new_height))
+                new_xmax = max(
+                    0, min(row['xmax'] * (new_width / original_width), new_width))
+                new_ymax = max(
+                    0, min(row['ymax'] * (new_height / original_height), new_height))
 
-                    xmin, ymin, xmax, ymax = row['xmin'], row['ymin'], row['xmax'], row['ymax']
-                    new_xmin = xmin + x_offset
-                    new_ymin = ymin + y_offset
-                    new_xmax = xmax + x_offset
-                    new_ymax = ymax + y_offset
-                else:
-                    # Redimensiona proporcionalmente
-                    new_xmin = row['xmin'] * (new_width / original_width)
-                    new_ymin = row['ymin'] * (new_height / original_height)
-                    new_xmax = row['xmax'] * (new_width / original_width)
-                    new_ymax = row['ymax'] * (new_height / original_height)
+                # Garantir que as coordenadas finais não ultrapassem os limites de 640x640
+                new_xmin = min(new_xmin, new_width)
+                new_ymin = min(new_ymin, new_height)
+                new_xmax = min(new_xmax, new_width)
+                new_ymax = min(new_ymax, new_height)
 
                 # Adiciona as anotações corrigidas
                 new_labels.append({

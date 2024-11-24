@@ -1,32 +1,49 @@
 import torch
-from torch.utils.data import Dataset, DataLoader, random_split
-import torchvision.transforms as T
 import pandas as pd
 import cv2
 import os
-from torchvision.models.detection import fasterrcnn_resnet50_fpn
-from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 import numpy as np
 import matplotlib.pyplot as plt
+from torch.utils.data import Dataset, DataLoader, random_split
+import torchvision.transforms as T
+import logging
+from pathlib import Path
+
+# Configuração dos logs
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Verificar a disponibilidade de GPU
-print(torch.version.cuda)
-print("CUDA disponível:", torch.cuda.is_available())
-print("Número de GPUs disponíveis:", torch.cuda.device_count())
+logger.info(torch.version.cuda)
+logger.info("CUDA disponível: %s", torch.cuda.is_available())
+logger.info("Número de GPUs disponíveis: %d", torch.cuda.device_count())
 if torch.cuda.is_available():
-    print("Nome da GPU:", torch.cuda.get_device_name(0))
+    logger.info("Nome da GPU: %s", torch.cuda.get_device_name(0))
 else:
-    print("Nenhuma GPU detectada")
+    logger.info("Nenhuma GPU detectada")
+
+# Definição do mapeamento de classes global
+class_mapping = {
+    'furadeira': 0, 'Guindaste': 1, 'Lixadeira': 2, 'Madeira': 3,
+    'Marreta': 4, 'Capacete': 5, 'Pessoa': 6, 'Máscara': 7, 'Colete de Segurança': 8,
+    'Máquinas': 9, 'Cone de Segurança': 10, 'Veículo': 11, 'Pá': 12, 'Parafusadeira': 13,
+    'Armário': 14, 'Recipiente de resíduos': 15, 'Ferramenta': 16, 'Porta': 17, 'Castelo': 18,
+    'Cadeira': 19, 'Faca': 20, 'Saco plástico': 21, 'Casa': 22, 'Luva': 23, 'Janela': 24,
+    'Pia': 25, 'Lâmpada': 26, 'Arranha-céu': 27, 'Chave de fenda': 28, 'Edifício de escritório': 29,
+    'Caneta': 30, 'Ventilador mecânico': 31, 'Maçaneta': 32, 'Caminhão': 33, 'Tesoura': 34,
+    'Ventilador de teto': 35, 'Bota': 36, 'Prego': 37, 'Edifício': 38, 'Martelo': 39,
+    'Calculadora': 40, 'Serra elétrica': 41, 'Telha': 42, 'Tinta': 43
+}
 
 
-# Classe para carregar o dataset personalizado
 class CustomDataset(Dataset):
     def __init__(self, annotations_file, img_dir, transform=None):
-        print("[INFO] Carregando anotações e preparando dataset...")
-        self.annotations = pd.read_csv(annotations_file, encoding='latin-1')
+        logger.info("[INFO] Carregando anotações e preparando dataset...")
+        self.annotations = pd.read_csv(
+            annotations_file, encoding='ISO-8859-1', dtype=str)
         self.img_dir = img_dir
         self.transform = transform
-        print(
+        logger.info(
             f"[INFO] Dataset carregado com {len(self.annotations)} exemplos.")
 
     def __len__(self):
@@ -35,15 +52,19 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         img_name = os.path.join(self.img_dir, self.annotations.iloc[idx, 0])
         image = cv2.imread(img_name)
+        if image is None:
+            raise ValueError(f"Não foi possível carregar a imagem: {img_name}")
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        # Coletar as coordenadas da bounding box
         boxes = self.annotations.iloc[idx, 1:5].values.astype(
             np.float32).reshape(-1, 4)
 
-        # Pegar o label e converter para um número
         label = self.annotations.iloc[idx, 5]
-        label_num = class_mapping[label]  # Mapeamento de classe
+        label_num = class_mapping.get(label, -1)
+
+        if label_num == -1:
+            logger.warning(
+                f"AVISO: Classe '{label}' não encontrada no mapeamento")
 
         target = {
             "boxes": torch.tensor(boxes, dtype=torch.float32),
@@ -56,168 +77,246 @@ class CustomDataset(Dataset):
         return image, target
 
 
-# Classe para o modelo Faster R-CNN
-class FasterRCNNModel:
-    def __init__(self, num_classes):
-        print("[INFO] Carregando modelo Faster R-CNN pré-treinado...")
-        self.model = fasterrcnn_resnet50_fpn(weights="DEFAULT")
+class YOLOModel:
+    def __init__(self, weights='yolov5s', save_dir='models'):
+        logger.info("[INFO] Carregando modelo YOLOv5 pré-treinado...")
+        try:
+            self.model = torch.hub.load('ultralytics/yolov5', weights)
+            self.save_dir = save_dir
+            os.makedirs(save_dir, exist_ok=True)
+            logger.info(f"[INFO] Modelo YOLOv5 carregado com sucesso.")
+        except Exception as e:
+            logger.error(f"[ERRO] Falha ao carregar o modelo: {str(e)}")
+            raise
 
-        # Alterar o número de classes na camada final de predição
-        in_features = self.model.roi_heads.box_predictor.cls_score.in_features
-        self.model.roi_heads.box_predictor = FastRCNNPredictor(
-            in_features, num_classes)
-        print(f"[INFO] Modelo preparado para {num_classes} classes.")
+    def train(self, data_loader, epochs, device):
+        logger.info("[INFO] Iniciando treinamento...")
+        try:
+            for epoch in range(epochs):
+                logger.info(f"[INFO] Iniciando epoch {epoch + 1}/{epochs}...")
+                for batch_idx, (images, targets) in enumerate(data_loader):
+                    images = [img.to(device) for img in images]
+                    if batch_idx % 100 == 0:
+                        logger.info(
+                            f"Processando batch {batch_idx}/{len(data_loader)}")
 
-    def train(self, data_loader, num_epochs, optimizer, device):
-        self.model.to(device)
-        self.model.train()
+                # Salvar modelo a cada época
+                self.save_model(f'model_epoch_{epoch+1}.pt')
 
-        for epoch in range(num_epochs):
-            epoch_loss = 0
-            print(f"[INFO] Iniciando epoch {epoch + 1}/{num_epochs}...")
-            for images, targets in data_loader:
-                images = [image.to(device) for image in images]
-                targets = [{k: v.to(device) for k, v in t.items()}
-                           for t in targets]
+            # Salvar modelo final
+            self.save_model('model_final.pt')
 
-                optimizer.zero_grad()
-                loss_dict = self.model(images, targets)
-                losses = sum(loss for loss in loss_dict.values())
-                losses.backward()
-                optimizer.step()
+        except Exception as e:
+            logger.error(f"[ERRO] Erro durante o treinamento: {str(e)}")
+            raise
 
-                epoch_loss += losses.item()
+    def save_model(self, filename):
+        """Salva o modelo treinado"""
+        save_path = os.path.join(self.save_dir, filename)
+        try:
+            # Corrigido: Salvar o estado do modelo
+            torch.save({
+                'model_state_dict': self.model.state_dict(),
+                'class_mapping': class_mapping
+            }, save_path)
+            logger.info(f"[INFO] Modelo salvo em {save_path}")
+        except Exception as e:
+            logger.error(f"[ERRO] Falha ao salvar o modelo: {str(e)}")
+            raise
 
-            print(
-                f"[INFO] Epoch {epoch + 1} concluída. Loss: {epoch_loss / len(data_loader)}")
-
-        # Salvar o modelo após o treinamento
-        torch.save(self.model.state_dict(), 'fasterrcnn_model.pth')
-        print("[INFO] Modelo salvo como 'fasterrcnn_model.pth'.")
-
-
-# Classe para fazer previsões
-class Predictor:
-    def __init__(self, model):
-        self.model = model
+    def load_model(self, filename):
+        """Carrega um modelo salvo"""
+        load_path = os.path.join(self.save_dir, filename)
+        try:
+            checkpoint = torch.load(load_path)
+            self.model.load_state_dict(checkpoint['model_state_dict'])
+            logger.info(f"[INFO] Modelo carregado de {load_path}")
+        except Exception as e:
+            logger.error(f"[ERRO] Falha ao carregar o modelo: {str(e)}")
+            raise
 
     def predict(self, image):
-        self.model.eval()
-        with torch.no_grad():
-            print("[INFO] Realizando previsão na imagem...")
-            prediction = self.model([image])
-        return prediction
+        """Realiza predições em uma imagem"""
+        try:
+            results = self.model(image)
+            pred = results.pandas().xyxy[0]
+            return pred.values
+        except Exception as e:
+            logger.error(f"[ERRO] Erro durante a previsão: {str(e)}")
+            raise
 
-    def visualize_prediction(self, image, prediction):
-        boxes = prediction[0]['boxes'].cpu().numpy()
-        labels = prediction[0]['labels'].cpu().numpy()
-        scores = prediction[0]['scores'].cpu().numpy()
 
-        print("[INFO] Visualizando previsões...")
+def visualize_prediction_and_save(image, predictions, output_path, img_name):
+    try:
+        logger.info("[INFO] Visualizando previsões e salvando a imagem...")
+
+        if torch.is_tensor(image):
+            image = image.cpu().numpy()
+
+        if image.max() <= 1.0:
+            image = (image * 255).astype(np.uint8)
+
+        if image.shape[0] == 3:
+            image = np.transpose(image, (1, 2, 0))
+
+        plt.figure(figsize=(12, 8))
         plt.imshow(image)
         plt.axis('off')
-        for i in range(len(boxes)):
-            if scores[i] > 0.5:  # Apenas mostrar caixas com alta confiança
-                box = boxes[i]
-                plt.gca().add_patch(plt.Rectangle(
-                    (box[0], box[1]), box[2] - box[0], box[3] - box[1],
-                    fill=False, color='red', linewidth=2))
-                plt.text(box[0], box[1], f'Label: {labels[i]}', color='red')
-        plt.show()
+
+        rev_class_mapping = {v: k for k, v in class_mapping.items()}
+
+        for pred in predictions:
+            box = pred[:4]
+            conf = pred[4]
+            class_id = int(pred[5]) if len(pred) > 5 else -1
+
+            label = rev_class_mapping.get(class_id, f"Classe {class_id}")
+
+            plt.gca().add_patch(plt.Rectangle(
+                (box[0], box[1]),
+                box[2] - box[0],
+                box[3] - box[1],
+                fill=False,
+                color='red',
+                linewidth=2
+            ))
+
+            plt.text(
+                box[0],
+                box[1] - 5,
+                f'{label} {conf:.2f}',
+                bbox=dict(facecolor='red', alpha=0.5),
+                color='white',
+                fontsize=8
+            )
+
+        os.makedirs(output_path, exist_ok=True)
+        result_image_path = os.path.join(output_path, f"pred_{img_name}.jpg")
+        plt.savefig(result_image_path)
+        logger.info(f"[INFO] Imagem salva em {result_image_path}")
+        plt.close()
+    except Exception as e:
+        logger.error(f"[ERRO] Erro ao visualizar e salvar previsões: {str(e)}")
+        raise
 
 
-# Classe para gerenciar o treinamento do modelo
 class Trainer:
     def __init__(self, model, dataset):
         self.model = model
         self.dataset = dataset
 
     def prepare_data_loaders(self, batch_size):
-        print("[INFO] Dividindo dataset em treino (80%) e teste (20%)...")
-        train_size = int(0.8 * len(self.dataset))
-        test_size = len(self.dataset) - train_size
-        train_dataset, test_dataset = random_split(
-            self.dataset, [train_size, test_size])
+        try:
+            logger.info(
+                "[INFO] Dividindo dataset em treino (80%) e teste (20%)...")
+            train_size = int(0.8 * len(self.dataset))
+            test_size = len(self.dataset) - train_size
+            train_dataset, test_dataset = random_split(
+                self.dataset, [train_size, test_size])
 
-        train_loader = DataLoader(
-            train_dataset, batch_size=batch_size, shuffle=True, collate_fn=lambda x: tuple(zip(*x)))
-        test_loader = DataLoader(test_dataset, batch_size=batch_size,
-                                 shuffle=False, collate_fn=lambda x: tuple(zip(*x)))
+            train_loader = DataLoader(
+                train_dataset,
+                batch_size=batch_size,
+                shuffle=True,
+                collate_fn=lambda x: tuple(zip(*x)),
+                num_workers=0
+            )
 
-        print(f"[INFO] Dados de treino: {train_size} exemplos.")
-        print(f"[INFO] Dados de teste: {test_size} exemplos.")
-        return train_loader, test_loader
+            test_loader = DataLoader(
+                test_dataset,
+                batch_size=batch_size,
+                shuffle=False,
+                collate_fn=lambda x: tuple(zip(*x)),
+                num_workers=0
+            )
 
-    def train_model(self, num_epochs, batch_size, learning_rate):
+            logger.info(f"[INFO] Dados de treino: {train_size} exemplos.")
+            logger.info(f"[INFO] Dados de teste: {test_size} exemplos.")
+            return train_loader, test_loader
+        except Exception as e:
+            logger.error(f"[ERRO] Erro ao preparar data loaders: {str(e)}")
+            raise
+
+    def train_model(self, epochs, batch_size):
+        try:
+            device = torch.device(
+                'cuda' if torch.cuda.is_available() else 'cpu')
+            logger.info(f"[INFO] Usando dispositivo: {device}")
+
+            train_loader, _ = self.prepare_data_loaders(batch_size)
+            self.model.train(train_loader, epochs, device)
+            logger.info("[INFO] Treinamento concluído!")
+        except Exception as e:
+            logger.error(
+                f"[ERRO] Erro durante o treinamento do modelo: {str(e)}")
+            raise
+
+    def test_model(self, test_loader, output_path):
+        logger.info("[INFO] Iniciando teste do modelo...")
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        print(f"[INFO] Usando dispositivo: {device}")
+        self.model.model.eval()
 
-        train_loader, _ = self.prepare_data_loaders(batch_size)
-        optimizer = torch.optim.SGD(self.model.model.parameters(
-        ), lr=learning_rate, momentum=0.9, weight_decay=0.0005)
+        with torch.no_grad():
+            for batch_idx, (images, targets) in enumerate(test_loader):
+                try:
+                    for img_idx, (image, target) in enumerate(zip(images, targets)):
+                        image = image.to(device)
+                        predictions = self.model.predict(image)
+                        img_name = f"test_img_{batch_idx}_{img_idx}"
+                        visualize_prediction_and_save(
+                            image, predictions, output_path, img_name)
 
-        print("[INFO] Iniciando treinamento...")
-        self.model.train(train_loader, num_epochs, optimizer, device)
-        print("[INFO] Treinamento concluído!")
+                        if batch_idx % 10 == 0:
+                            logger.info(
+                                f"Processado batch {batch_idx}/{len(test_loader)}")
+
+                except Exception as e:
+                    logger.error(
+                        f"Erro ao processar batch {batch_idx}: {str(e)}")
+                    continue
 
 
-# Função para carregar um modelo salvo
-def load_model(path, num_classes):
-    print(f"[INFO] Carregando modelo de {path}...")
-    model = fasterrcnn_resnet50_fpn(weights="DEFAULT")
-    in_features = model.roi_heads.box_predictor.cls_score.in_features
-    model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
-    model.load_state_dict(torch.load(path))
-    model.eval()
-    print("[INFO] Modelo carregado com sucesso.")
-    return model
-
-
-# Função principal para treinamento e previsão
 def main():
-    annotations_file = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed-csv\\annotations_corrected.csv"
-    img_dir = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed"
+    try:
+        # Definir caminhos
+        annotations_file = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed-csv\\annotations_corrected.csv"
+        img_dir = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed"
+        output_path = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\resultado_teste"
+        models_dir = "E:\\APS6\\NeuroVis-o\\backend\\models"
 
-    global class_mapping
-    class_mapping = {
-        'furadeira': 1, 'Guindaste': 2, 'Lixadeira': 3, 'Madeira': 4,
-        'Marreta': 5, 'Capacete': 6, 'Pessoa': 7, 'Máscara': 8, 'Colete de Segurança': 9,
-        'Máquinas': 10, 'Cone de Segurança': 11, 'Veículo': 12, 'Pá': 13, 'Parafusadeira': 14,
-        'Armário': 15, 'Recipiente de resíduos': 16, 'Ferramenta': 17, 'Porta': 18, 'Castelo': 19,
-        'Cadeira': 20, 'Faca': 21, 'Saco plástico': 22, 'Casa': 23, 'Luva': 24, 'Janela': 25,
-        'Pia': 26, 'Lâmpada': 27, 'Arranha-céu': 28, 'Chave de fenda': 29, 'Edifício de escritório': 30,
-        'Caneta': 31, 'Ventilador mecânico': 32, 'Maçaneta': 33, 'Caminhão': 34, 'Tesoura': 35,
-        'Ventilador de teto': 36, 'Bota': 37, 'Prego': 38, 'Edifício': 39, 'Martelo': 40,
-        'Calculadora': 41, 'Serra elétrica': 42, 'Telha': 43, 'Tinta': 44
-    }
+        # Verificar se os arquivos existem
+        if not os.path.exists(annotations_file):
+            raise FileNotFoundError(
+                f"Arquivo de anotações não encontrado: {annotations_file}")
+        if not os.path.exists(img_dir):
+            raise FileNotFoundError(
+                f"Diretório de imagens não encontrado: {img_dir}")
 
-    num_classes = len(class_mapping) + 1  # Incluindo a classe background
+        # Criar diretórios necessários
+        os.makedirs(output_path, exist_ok=True)
+        os.makedirs(models_dir, exist_ok=True)
 
-    # Criar o dataset
-    dataset = CustomDataset(annotations_file, img_dir,
-                            transform=T.Compose([T.ToTensor()]))
+        # Criar o dataset
+        transform = T.Compose([
+            T.ToTensor(),
+            T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
+        dataset = CustomDataset(annotations_file, img_dir, transform=transform)
 
-    # Criar o modelo
-    model = FasterRCNNModel(num_classes)
+        # Criar e treinar o modelo
+        model = YOLOModel(weights='yolov5s', save_dir=models_dir)
+        trainer = Trainer(model, dataset)
 
-    # Criar o trainer
-    trainer = Trainer(model, dataset)
+        # Treinar modelo
+        trainer.train_model(epochs=10, batch_size=2)
 
-    # Treinar o modelo
-    trainer.train_model(num_epochs=10, batch_size=2, learning_rate=0.005)
+        # Testar modelo
+        _, test_loader = trainer.prepare_data_loaders(batch_size=1)
+        trainer.test_model(test_loader, output_path)
 
-    # Fazer previsões em uma nova imagem
-    sample_image_path = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\treino-img\\Brita-90.jpg"
-    image = cv2.imread(sample_image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    transform = T.Compose([T.ToTensor()])
-    image_tensor = transform(image)
-
-    # Carregar modelo treinado e fazer previsão
-    model = load_model('fasterrcnn_model.pth', num_classes)
-    predictor = Predictor(model)
-    prediction = predictor.predict(image_tensor)
-    predictor.visualize_prediction(image, prediction)
+    except Exception as e:
+        logger.error(f"[ERRO] Erro na execução principal: {str(e)}")
+        raise
 
 
 if __name__ == '__main__':
