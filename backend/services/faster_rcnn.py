@@ -1,323 +1,162 @@
-import torch
-import pandas as pd
-import cv2
 import os
-import numpy as np
-import matplotlib.pyplot as plt
-from torch.utils.data import Dataset, DataLoader, random_split
-import torchvision.transforms as T
+import torch
+import re
+from ultralytics import YOLO
 import logging
-from pathlib import Path
 
-# Configuração dos logs
-logging.basicConfig(level=logging.INFO)
+# Configuração de logs
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Verificar a disponibilidade de GPU
-logger.info(torch.version.cuda)
-logger.info("CUDA disponível: %s", torch.cuda.is_available())
-logger.info("Número de GPUs disponíveis: %d", torch.cuda.device_count())
-if torch.cuda.is_available():
-    logger.info("Nome da GPU: %s", torch.cuda.get_device_name(0))
-else:
-    logger.info("Nenhuma GPU detectada")
-
-# Definição do mapeamento de classes global
-class_mapping = {
-    'furadeira': 0, 'Guindaste': 1, 'Lixadeira': 2, 'Madeira': 3,
-    'Marreta': 4, 'Capacete': 5, 'Pessoa': 6, 'Máscara': 7, 'Colete de Segurança': 8,
-    'Máquinas': 9, 'Cone de Segurança': 10, 'Veículo': 11, 'Pá': 12, 'Parafusadeira': 13,
-    'Armário': 14, 'Recipiente de resíduos': 15, 'Ferramenta': 16, 'Porta': 17, 'Castelo': 18,
-    'Cadeira': 19, 'Faca': 20, 'Saco plástico': 21, 'Casa': 22, 'Luva': 23, 'Janela': 24,
-    'Pia': 25, 'Lâmpada': 26, 'Arranha-céu': 27, 'Chave de fenda': 28, 'Edifício de escritório': 29,
-    'Caneta': 30, 'Ventilador mecânico': 31, 'Maçaneta': 32, 'Caminhão': 33, 'Tesoura': 34,
-    'Ventilador de teto': 35, 'Bota': 36, 'Prego': 37, 'Edifício': 38, 'Martelo': 39,
-    'Calculadora': 40, 'Serra elétrica': 41, 'Telha': 42, 'Tinta': 43
-}
+# Ativar expansão de segmentos de memória
+os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
 
-class CustomDataset(Dataset):
-    def __init__(self, annotations_file, img_dir, transform=None):
-        logger.info("[INFO] Carregando anotações e preparando dataset...")
-        self.annotations = pd.read_csv(
-            annotations_file, encoding='ISO-8859-1', dtype=str)
-        self.img_dir = img_dir
-        self.transform = transform
-        logger.info(
-            f"[INFO] Dataset carregado com {len(self.annotations)} exemplos.")
+class YOLOv8Trainer:
+    def __init__(self, data_yaml, base_dir, model_weights='yolov8n.pt', train_per_run=20):
+        self.data_yaml = data_yaml
+        self.base_dir = base_dir
+        self.model_weights = model_weights
+        self.train_per_run = train_per_run  # Quantidade de épocas por execução
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.model = None
+        self.last_epoch = 0
+        self.last_train_dir = None
+        self.last_weights = None
 
-    def __len__(self):
-        return len(self.annotations)
+        self._check_device()
+        self._find_last_training()
 
-    def __getitem__(self, idx):
-        img_name = os.path.join(self.img_dir, self.annotations.iloc[idx, 0])
-        image = cv2.imread(img_name)
-        if image is None:
-            raise ValueError(f"Não foi possível carregar a imagem: {img_name}")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    def _check_device(self):
+        if self.device == 'cuda':
+            logger.info(f"GPU disponível: {torch.cuda.get_device_name(0)}")
+        else:
+            logger.warning("GPU não disponível. Usando CPU.")
 
-        boxes = self.annotations.iloc[idx, 1:5].values.astype(
-            np.float32).reshape(-1, 4)
-
-        label = self.annotations.iloc[idx, 5]
-        label_num = class_mapping.get(label, -1)
-
-        if label_num == -1:
+    def _find_last_training(self):
+        """Verifica a última pasta de treino e encontra o último checkpoint"""
+        if not os.path.exists(self.base_dir):
             logger.warning(
-                f"AVISO: Classe '{label}' não encontrada no mapeamento")
+                f"Diretório {self.base_dir} não existe. Treinamento começará do zero.")
+            return
 
-        target = {
-            "boxes": torch.tensor(boxes, dtype=torch.float32),
-            "labels": torch.tensor([label_num], dtype=torch.int64)
-        }
+        train_dirs = [d for d in os.listdir(
+            self.base_dir) if re.match(r'train\d+', d)]
+        train_dirs.sort(key=lambda x: int(re.findall(r'\d+', x)[0]))
 
-        if self.transform:
-            image = self.transform(image)
+        if not train_dirs:
+            logger.warning(
+                "Nenhuma pasta de treino encontrada. Começando do zero.")
+            return
 
-        return image, target
+        self.last_train_dir = os.path.join(
+            self.base_dir, train_dirs[-1], 'weights')
+        logger.info(
+            f"Último diretório de treino encontrado: {self.last_train_dir}")
 
+        last_pt_path = os.path.join(self.last_train_dir, 'last.pt')
+        best_pt_path = os.path.join(self.last_train_dir, 'best.pt')
 
-class YOLOModel:
-    def __init__(self, weights='yolov5s', save_dir='models'):
-        logger.info("[INFO] Carregando modelo YOLOv5 pré-treinado...")
-        try:
-            self.model = torch.hub.load('ultralytics/yolov5', weights)
-            self.save_dir = save_dir
-            os.makedirs(save_dir, exist_ok=True)
-            logger.info(f"[INFO] Modelo YOLOv5 carregado com sucesso.")
-        except Exception as e:
-            logger.error(f"[ERRO] Falha ao carregar o modelo: {str(e)}")
-            raise
+        if os.path.exists(last_pt_path):
+            self.last_weights = last_pt_path
+        elif os.path.exists(best_pt_path):
+            self.last_weights = best_pt_path
+        else:
+            logger.warning(
+                "Nenhum checkpoint encontrado. Treinamento começará do zero.")
+            return
 
-    def train(self, data_loader, epochs, device):
-        logger.info("[INFO] Iniciando treinamento...")
-        try:
-            for epoch in range(epochs):
-                logger.info(f"[INFO] Iniciando epoch {epoch + 1}/{epochs}...")
-                for batch_idx, (images, targets) in enumerate(data_loader):
-                    images = [img.to(device) for img in images]
-                    if batch_idx % 100 == 0:
-                        logger.info(
-                            f"Processando batch {batch_idx}/{len(data_loader)}")
+        logger.info(f"Pesos carregados de: {self.last_weights}")
+        self._extract_last_epoch()
 
-                # Salvar modelo a cada época
-                self.save_model(f'model_epoch_{epoch+1}.pt')
+    def _extract_last_epoch(self):
+        """Lê o arquivo de log para encontrar a última época treinada"""
+        log_path = os.path.join(self.last_train_dir, '..', 'results.csv')
 
-            # Salvar modelo final
-            self.save_model('model_final.pt')
+        if os.path.exists(log_path):
+            try:
+                with open(log_path, 'r') as f:
+                    lines = f.readlines()
+                last_line = lines[-1].strip()
+                epoch_match = re.search(r'^(\d+),', last_line)
+                if epoch_match:
+                    self.last_epoch = int(epoch_match.group(1))
+                    logger.info(f"Última época treinada: {self.last_epoch}")
+            except Exception as e:
+                logger.error(f"Erro ao ler log de treino: {e}")
 
-        except Exception as e:
-            logger.error(f"[ERRO] Erro durante o treinamento: {str(e)}")
-            raise
-
-    def save_model(self, filename):
-        """Salva o modelo treinado"""
-        save_path = os.path.join(self.save_dir, filename)
-        try:
-            # Corrigido: Salvar o estado do modelo
-            torch.save({
-                'model_state_dict': self.model.state_dict(),
-                'class_mapping': class_mapping
-            }, save_path)
-            logger.info(f"[INFO] Modelo salvo em {save_path}")
-        except Exception as e:
-            logger.error(f"[ERRO] Falha ao salvar o modelo: {str(e)}")
-            raise
-
-    def load_model(self, filename):
-        """Carrega um modelo salvo"""
-        load_path = os.path.join(self.save_dir, filename)
-        try:
-            checkpoint = torch.load(load_path)
-            self.model.load_state_dict(checkpoint['model_state_dict'])
-            logger.info(f"[INFO] Modelo carregado de {load_path}")
-        except Exception as e:
-            logger.error(f"[ERRO] Falha ao carregar o modelo: {str(e)}")
-            raise
-
-    def predict(self, image):
-        """Realiza predições em uma imagem"""
-        try:
-            results = self.model(image)
-            pred = results.pandas().xyxy[0]
-            return pred.values
-        except Exception as e:
-            logger.error(f"[ERRO] Erro durante a previsão: {str(e)}")
-            raise
-
-
-def visualize_prediction_and_save(image, predictions, output_path, img_name):
-    try:
-        logger.info("[INFO] Visualizando previsões e salvando a imagem...")
-
-        if torch.is_tensor(image):
-            image = image.cpu().numpy()
-
-        if image.max() <= 1.0:
-            image = (image * 255).astype(np.uint8)
-
-        if image.shape[0] == 3:
-            image = np.transpose(image, (1, 2, 0))
-
-        plt.figure(figsize=(12, 8))
-        plt.imshow(image)
-        plt.axis('off')
-
-        rev_class_mapping = {v: k for k, v in class_mapping.items()}
-
-        for pred in predictions:
-            box = pred[:4]
-            conf = pred[4]
-            class_id = int(pred[5]) if len(pred) > 5 else -1
-
-            label = rev_class_mapping.get(class_id, f"Classe {class_id}")
-
-            plt.gca().add_patch(plt.Rectangle(
-                (box[0], box[1]),
-                box[2] - box[0],
-                box[3] - box[1],
-                fill=False,
-                color='red',
-                linewidth=2
-            ))
-
-            plt.text(
-                box[0],
-                box[1] - 5,
-                f'{label} {conf:.2f}',
-                bbox=dict(facecolor='red', alpha=0.5),
-                color='white',
-                fontsize=8
-            )
-
-        os.makedirs(output_path, exist_ok=True)
-        result_image_path = os.path.join(output_path, f"pred_{img_name}.jpg")
-        plt.savefig(result_image_path)
-        logger.info(f"[INFO] Imagem salva em {result_image_path}")
-        plt.close()
-    except Exception as e:
-        logger.error(f"[ERRO] Erro ao visualizar e salvar previsões: {str(e)}")
-        raise
-
-
-class Trainer:
-    def __init__(self, model, dataset):
-        self.model = model
-        self.dataset = dataset
-
-    def prepare_data_loaders(self, batch_size):
-        try:
+    def load_model(self):
+        """Carrega o modelo a partir do último checkpoint ou do modelo pré-treinado"""
+        if self.last_weights:
+            logger.info(f"Carregando modelo de {self.last_weights}")
+            self.model = YOLO(self.last_weights)
+        else:
             logger.info(
-                "[INFO] Dividindo dataset em treino (80%) e teste (20%)...")
-            train_size = int(0.8 * len(self.dataset))
-            test_size = len(self.dataset) - train_size
-            train_dataset, test_dataset = random_split(
-                self.dataset, [train_size, test_size])
+                f"Carregando modelo pré-treinado: {self.model_weights}")
+            self.model = YOLO(self.model_weights)
 
-            train_loader = DataLoader(
-                train_dataset,
-                batch_size=batch_size,
-                shuffle=True,
-                collate_fn=lambda x: tuple(zip(*x)),
-                num_workers=0
-            )
+    def train(self):
+        """Treina o modelo por 20 épocas por execução"""
+        logger.info(
+            f"Iniciando treinamento por {self.train_per_run} épocas a partir da época {self.last_epoch}...")
 
-            test_loader = DataLoader(
-                test_dataset,
-                batch_size=batch_size,
-                shuffle=False,
-                collate_fn=lambda x: tuple(zip(*x)),
-                num_workers=0
-            )
-
-            logger.info(f"[INFO] Dados de treino: {train_size} exemplos.")
-            logger.info(f"[INFO] Dados de teste: {test_size} exemplos.")
-            return train_loader, test_loader
-        except Exception as e:
-            logger.error(f"[ERRO] Erro ao preparar data loaders: {str(e)}")
-            raise
-
-    def train_model(self, epochs, batch_size):
         try:
-            device = torch.device(
-                'cuda' if torch.cuda.is_available() else 'cpu')
-            logger.info(f"[INFO] Usando dispositivo: {device}")
-
-            train_loader, _ = self.prepare_data_loaders(batch_size)
-            self.model.train(train_loader, epochs, device)
-            logger.info("[INFO] Treinamento concluído!")
+            self.model.train(
+                data=self.data_yaml,
+                epochs=self.train_per_run,  # Sempre 20 épocas
+                imgsz=320,
+                batch=4,
+                device=self.device,
+                save=True,
+                save_period=self.train_per_run,  # Salva a cada 20 épocas
+                plots=True,
+                rect=True,
+                workers=0,
+                augment=False,
+                resume=True  # Resume o treinamento corretamente
+            )
+            self.last_epoch += self.train_per_run  # Atualiza a última época
+            logger.info(
+                f"Treinamento concluído até a época {self.last_epoch}.")
         except Exception as e:
-            logger.error(
-                f"[ERRO] Erro durante o treinamento do modelo: {str(e)}")
-            raise
+            logger.error(f"Erro durante o treinamento: {e}")
 
-    def test_model(self, test_loader, output_path):
-        logger.info("[INFO] Iniciando teste do modelo...")
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model.model.eval()
-
-        with torch.no_grad():
-            for batch_idx, (images, targets) in enumerate(test_loader):
-                try:
-                    for img_idx, (image, target) in enumerate(zip(images, targets)):
-                        image = image.to(device)
-                        predictions = self.model.predict(image)
-                        img_name = f"test_img_{batch_idx}_{img_idx}"
-                        visualize_prediction_and_save(
-                            image, predictions, output_path, img_name)
-
-                        if batch_idx % 10 == 0:
-                            logger.info(
-                                f"Processado batch {batch_idx}/{len(test_loader)}")
-
-                except Exception as e:
-                    logger.error(
-                        f"Erro ao processar batch {batch_idx}: {str(e)}")
-                    continue
+            # Se o erro for relacionado a não poder retomar, inicie um novo treinamento
+            if "nothing to resume" in str(e):
+                logger.warning(
+                    "Iniciando um novo treinamento a partir do modelo pré-treinado.")
+                self.model.train(
+                    data=self.data_yaml,
+                    epochs=self.train_per_run,
+                    imgsz=320,
+                    batch=4,
+                    device=self.device,
+                    save=True,
+                    save_period=self.train_per_run,
+                    plots=True,
+                    rect=True,
+                    workers=0,
+                    augment=False,
+                    resume=False  # Não retomar, iniciar novo treinamento
+                )
+                self.last_epoch = 0  # Reinicia a contagem de épocas
+                logger.info(
+                    f"Novo treinamento concluído até a época {self.last_epoch}.")
 
 
-def main():
-    try:
-        # Definir caminhos
-        annotations_file = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed-csv\\annotations_corrected.csv"
-        img_dir = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\processed"
-        output_path = "E:\\APS6\\NeuroVis-o\\backend\\uploads\\resultado_teste"
-        models_dir = "E:\\APS6\\NeuroVis-o\\backend\\models"
+if __name__ == "__main__":
+    data_yaml = 'E:/APS6/NeuroVis-o/backend/dataset/dataset_config.yaml'
+    base_dir = 'E:/APS6/NeuroVis-o/runs/detect'
+    model_weights = 'yolov8n.pt'
+    train_per_run = 20  # Rodar apenas 20 épocas por execução
 
-        # Verificar se os arquivos existem
-        if not os.path.exists(annotations_file):
-            raise FileNotFoundError(
-                f"Arquivo de anotações não encontrado: {annotations_file}")
-        if not os.path.exists(img_dir):
-            raise FileNotFoundError(
-                f"Diretório de imagens não encontrado: {img_dir}")
+    trainer = YOLOv8Trainer(
+        data_yaml=data_yaml,
+        base_dir=base_dir,
+        model_weights=model_weights,
+        train_per_run=train_per_run
+    )
 
-        # Criar diretórios necessários
-        os.makedirs(output_path, exist_ok=True)
-        os.makedirs(models_dir, exist_ok=True)
-
-        # Criar o dataset
-        transform = T.Compose([
-            T.ToTensor(),
-            T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
-        dataset = CustomDataset(annotations_file, img_dir, transform=transform)
-
-        # Criar e treinar o modelo
-        model = YOLOModel(weights='yolov5s', save_dir=models_dir)
-        trainer = Trainer(model, dataset)
-
-        # Treinar modelo
-        trainer.train_model(epochs=10, batch_size=2)
-
-        # Testar modelo
-        _, test_loader = trainer.prepare_data_loaders(batch_size=1)
-        trainer.test_model(test_loader, output_path)
-
-    except Exception as e:
-        logger.error(f"[ERRO] Erro na execução principal: {str(e)}")
-        raise
-
-
-if __name__ == '__main__':
-    main()
+    trainer.load_model()
+    trainer.train()
