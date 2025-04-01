@@ -1,0 +1,35 @@
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+# Instância do banco de dados
+db = SQLAlchemy()
+
+class User(db.Model):
+    __tablename__ = 'users'  # Nome da tabela no banco de dados
+
+    # Definindo as colunas da tabela
+    id = db.Column(db.Integer, primary_key=True)  # 'id' é a chave primária da tabela
+    email = db.Column(db.String(120), unique=True, nullable=False)  # Coluna 'email', única e não nula
+    password = db.Column(db.String(255), nullable=False)  # Coluna 'password', não pode ser nula
+    name = db.Column(db.String(100), nullable=False)  # Coluna 'name', não pode ser nula
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Coluna 'created_at', com valor padrão
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)  # Coluna 'updated_at', atualizada automaticamente
+
+    def __repr__(self):
+        return f"<User {self.name}>"
+
+    def serialize(self):
+        """Método para transformar o objeto User em um dicionário"""
+        return {
+            'id': self.id,
+            'email': self.email,
+            'name': self.name,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
+
+    @staticmethod
+    def validate_password(password, hashed_password):
+        """Método para verificar se a senha fornecida bate com a senha criptografada"""
+        from werkzeug.security import check_password_hash
+        return check_password_hash(hashed_password, password)
