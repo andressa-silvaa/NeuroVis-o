@@ -1,0 +1,38 @@
+.fundo-form-login {
+    background-image: url('../../assets/img/form-login.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 500px;
+    height: 80%;
+    justify-content: center;
+    align-items: center;
+    background-size: 100% 100%; 
+}
+
+label, h1, span{
+    color: white;
+}
+
+span a{
+    color: #08260A;
+}
+
+.btn-login{
+    color: white;
+    background-color: #08260A;
+    font-weight: bold;
+}
+.btn-registro{
+    color: #08260A;
+    border: 1px solid #08260A;
+    background-color: transparent;
+}
+
+@media (max-width: 600px) {
+
+    .fundo-form-login {
+        width: 350px;
+        height: 75%;
+    }
+
+}

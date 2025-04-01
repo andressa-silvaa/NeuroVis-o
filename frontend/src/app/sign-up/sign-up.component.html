@@ -1,0 +1,67 @@
+<div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center fundo-login">
+    <h1 class="mb-5">Registro</h1> 
+    <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" class="fundo-form-login d-flex flex-column justify-content-center align-items-center" style="height: 80%;">
+        <div class="row mb-3 align-items-center justify-content-center div-registro" style="width: 70%;">
+            <div class="col-12">
+                <label for="nome">Nome completo:</label>
+                <input class="form-control" type="text" id="nome" name="nome" 
+                       [(ngModel)]="nomeInput" #nome="ngModel"
+                       required minlength="3"
+                       [ngClass]="{'is-invalid': nome.invalid && (nome.dirty || nome.touched)}"
+                       placeholder="Nome completo">
+                <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="invalid-feedback">
+                    <div *ngIf="nome.errors?.['required']">Nome é obrigatório</div>
+                    <div *ngIf="nome.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres</div>
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="email">E-mail:</label>
+                <input class="form-control" type="email" id="email" name="email" 
+                       [(ngModel)]="emailInput" #email="ngModel"
+                       required email
+                       [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}"
+                       placeholder="EX: email@gmail.com">
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                    <div *ngIf="email.errors?.['required']">E-mail é obrigatório</div>
+                    <div *ngIf="email.errors?.['email']">Por favor, insira um e-mail válido</div>
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="senha">Senha:</label>
+                <input class="form-control" type="password" id="senha" name="senha" 
+                       [(ngModel)]="senhaInput" #senha="ngModel"
+                       required minlength="6"
+                       [ngClass]="{'is-invalid': senha.invalid && (senha.dirty || senha.touched)}"
+                       placeholder="******">
+                <div *ngIf="senha.invalid && (senha.dirty || senha.touched)" class="invalid-feedback">
+                    <div *ngIf="senha.errors?.['required']">Senha é obrigatória</div>
+                    <div *ngIf="senha.errors?.['minlength']">Senha deve ter pelo menos 6 caracteres</div>
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="senhaConfirmacao">Confirme a senha:</label>
+                <input class="form-control" type="password" id="senhaConfirmacao" name="senhaConfirmacao" 
+                       [(ngModel)]="senhaConfirmacaoInput" #senhaConfirmacao="ngModel"
+                       required
+                       [ngClass]="{'is-invalid': (senhaConfirmacao.invalid || signupForm.value.senha !== signupForm.value.senhaConfirmacao) && (senhaConfirmacao.dirty || senhaConfirmacao.touched)}"
+                       placeholder="******">
+                <div *ngIf="senhaConfirmacao.invalid && (senhaConfirmacao.dirty || senhaConfirmacao.touched)" class="invalid-feedback">
+                    <div *ngIf="senhaConfirmacao.errors?.['required']">Confirmação de senha é obrigatória</div>
+                </div>
+                <div *ngIf="signupForm.value.senha !== signupForm.value.senhaConfirmacao && senhaConfirmacao.touched" class="invalid-feedback">
+                    As senhas não coincidem
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-5" style="width: 70%;">
+            <div class="col-12 mb-2">
+                <button type="submit" class="w-100 btn btn-registro" [disabled]="!signupForm.valid || signupForm.value.senha !== signupForm.value.senhaConfirmacao">
+                    Registre-se
+                </button>
+            </div>
+            <div class="col-12">
+                <button type="button" class="w-100 btn btn-login" [routerLink]="['/login']">Login</button>
+            </div>
+        </div>
+    </form>
+</div>

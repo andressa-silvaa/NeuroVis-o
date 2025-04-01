@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+    box-sizing: border-box;
+}
+.fundo-login {
+    background: url('assets/img/grupo-background.png'), rgba(8, 38, 10, 0.31);
+    background-size: 100% 100%; 
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+
