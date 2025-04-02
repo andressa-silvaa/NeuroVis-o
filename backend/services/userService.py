@@ -1,53 +1,64 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from marshmallow import ValidationError
 from flask_jwt_extended import create_access_token
-from models import User, db  # Importando User e db para interagir com a base de dados
-from repositories import create_user, get_user_by_email, get_user_by_id, update_user
+from models.userModel import User
+from schemas.UserRegistrationSchema import UserRegistrationSchema
+from schemas.userLoginSchema import UserLoginSchema
+from repositories.userRepository import create_user, get_user_by_email
 
-# Função para registrar um usuário
+def validate_registration_data(data):
+    schema = UserRegistrationSchema()
+    errors = schema.validate(data)
+    if errors:
+        raise ValidationError(errors)
+    return schema.load(data)
+
+def validate_login_data(data):
+    schema = UserLoginSchema()
+    errors = schema.validate(data)
+    if errors:
+        raise ValidationError(errors)
+    return schema.load(data) 
+
 def register_user(data):
-    email = data.get('email')
-    password = data.get('password')
-    name = data.get('name')
+    try:
+        validated_data = validate_registration_data(data)
+        
+        email = validated_data['email']
+        password = validated_data['password']
+        name = validated_data['name']
 
-    # Verifica se o email já está cadastrado
-    existing_user = get_user_by_email(email)
-    if existing_user:
-        raise ValidationError("Email já cadastrado.")
+        existing_user = get_user_by_email(email)
+        if existing_user:
+            raise ValidationError({"email": ["Email já cadastrado"]})
 
-    # Criptografa a senha
-    hashed_password = generate_password_hash(password)
+        hashed_password = generate_password_hash(password)
+        user = create_user(email, hashed_password, name)
+        return user
 
-    # Chama o repositório para criar o novo usuário
-    user = create_user(email, hashed_password, name)
-    return user
+    except ValidationError as e:
+        raise e  
+    except Exception as e:
+        raise Exception(f"Erro ao criar usuário: {str(e)}")
 
-# Função para realizar o login do usuário
 def login_user(email, password):
-    # Verifica se o email está registrado
-    user = get_user_by_email(email)
-    if not user:
-        raise ValidationError("Usuário não encontrado.")
+    try:
+        validated_data = validate_login_data({'email': email, 'password': password})
+        email = validated_data['email']
+        password = validated_data['password']
 
-    # Verifica se a senha está correta
-    if not check_password_hash(user.password, password):
-        raise ValidationError("Senha incorreta.")
+        user = get_user_by_email(email)
+        if not user:
+            raise ValidationError({"email": ["Credenciais inválidas"]})
 
-    # Cria o token de acesso (JWT)
-    access_token = create_access_token(identity=user.id)
-    return {"access_token": access_token}
+        if not user.check_password(password):
+            raise ValidationError({"password": ["Credenciais inválidas"]})
 
-# Função para atualizar o perfil de um usuário
-def update_user_profile(user_id, data):
-    # Busca o usuário pelo ID
-    user = get_user_by_id(user_id)
-    if not user:
-        raise ValidationError("Usuário não encontrado.")
+        access_token = create_access_token(identity=user.UserID)
 
-    # Atualiza os dados do usuário
-    user.name = data.get('name', user.name)
-    user.email = data.get('email', user.email)
+        return (user, access_token)  
 
-    # Chama o repositório para atualizar o usuário
-    updated_user = update_user(user)
-    return updated_user
+    except ValidationError as e:
+        raise e
+    except Exception as e:
+        raise Exception(f"Erro durante o login: {str(e)}")

@@ -1,20 +1,29 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 from config.config import Config
-from sqlalchemy import text  # Importar o 'text' do SQLAlchemy
+from extensions import db, jwt 
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    
+    # Inicializa extensões
+    db.init_app(app)
+    jwt.init_app(app)
+    
+    # Importa e registra blueprints DENTRO da função create_app
+    from controllers.userController import user_bp
+    app.register_blueprint(user_bp)
+    
+    return app
 
-@app.route('/')
-def test_connection():
-    try:
-        # Use o 'text()' para indicar que é uma expressão SQL textual
-        result = db.session.execute(text("SELECT 1"))
-        return "Conexão com o banco de dados bem-sucedida!"
-    except Exception as e:
-        return f"Erro de conexão: {e}"
+app = create_app()
+
+# Import dos models deve vir DEPOIS de criar o app
+from models.userModel import User
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
