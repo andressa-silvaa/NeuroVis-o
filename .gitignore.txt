@@ -1,3 +1,6 @@
+#backend
+backend/config/config.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -162,5 +165,3 @@ cython_debug/
 #.idea/
 
 
-#backend
-backend/config/config.py
