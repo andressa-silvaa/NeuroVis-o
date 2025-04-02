@@ -1,84 +1,88 @@
 import os
-import cv2
-import matplotlib.pyplot as plt
+from ultralytics import YOLO
+import logging
 
-# Caminho para o diretório das imagens e os arquivos de anotações
-images_dir = r"E:\APS6\NeuroVis-o\backend\uploads\processed"
-labels_dir = r"E:\APS6\NeuroVis-o\backend\uploads\yolo_labels"
-
-# Definir tamanho fixo das imagens
-IMG_WIDTH = 640
-IMG_HEIGHT = 640
-
-# Dicionário de classes fornecido
-class_mapping = {
-    'furadeira': 0, 'Guindaste': 1, 'Lixadeira': 2, 'Madeira': 3,
-    'Marreta': 4, 'Capacete': 5, 'Pessoa': 6, 'Máscara': 7, 'Colete de Segurança': 8,
-    'Máquinas': 9, 'Cone de Segurança': 10, 'Veículo': 11, 'Pá': 12, 'Parafusadeira': 13,
-    'Armário': 14, 'Recipiente de resíduos': 15, 'Ferramenta': 16, 'Porta': 17, 'Castelo': 18,
-    'Cadeira': 19, 'Faca': 20, 'Saco plástico': 21, 'Casa': 22, 'Luva': 23, 'Janela': 24,
-    'Pia': 25, 'Lâmpada': 26, 'Arranha-céu': 27, 'Chave de fenda': 28, 'Edifício de escritório': 29,
-    'Caneta': 30, 'Ventilador mecânico': 31, 'Maçaneta': 32, 'Caminhão': 33, 'Tesoura': 34,
-    'Ventilador de teto': 35, 'Bota': 36, 'Prego': 37, 'Edifício': 38, 'Martelo': 39,
-    'Calculadora': 40, 'Serra elétrica': 41, 'Telha': 42, 'Tinta': 43
-}
-
-# Função para exibir as imagens com os bounding boxes e as classes
+# Configuração de logs
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
-def display_images_with_bboxes():
-    for label_file in os.listdir(labels_dir):
-        if label_file.endswith(".txt"):
-            # Nome da imagem e caminho para o arquivo de imagem
-            image_name = label_file.replace(".txt", ".jpg")
-            image_path = os.path.join(images_dir, image_name)
+class YOLOv8Detector:
+    def __init__(self, weights_path, images_dir):
+        self.weights_path = weights_path
+        self.images_dir = images_dir
+        self.model = None
 
-            if not os.path.exists(image_path):
-                print(f"Imagem {image_name} não encontrada. Pulando...")
-                continue
+    def load_model(self):
+        """Carrega o modelo a partir do melhor checkpoint"""
+        if os.path.exists(self.weights_path):
+            logger.info(f"Carregando modelo de {self.weights_path}")
+            self.model = YOLO(self.weights_path)
+        else:
+            logger.error(
+                f"Arquivo de pesos não encontrado: {self.weights_path}")
+            raise FileNotFoundError(
+                f"Arquivo de pesos não encontrado: {self.weights_path}")
 
-            # Caminho do arquivo de anotação
-            label_path = os.path.join(labels_dir, label_file)
-            if not os.path.exists(label_path):
-                print(
-                    f"Arquivo de anotação {label_file} não encontrado. Pulando...")
-                continue
+    def detect_images(self, output_dir=None):
+        """Detecta objetos em todas as imagens da pasta especificada e salva os resultados."""
+        if not self.model:
+            logger.error(
+                "Modelo não carregado. Por favor, carregue o modelo primeiro.")
+            raise ValueError(
+                "Modelo não carregado. Por favor, carregue o modelo primeiro.")
 
-            # Carregar a imagem
-            img = cv2.imread(image_path)
-            # Converter BGR para RGB
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        if not os.path.exists(self.images_dir):
+            logger.error(
+                f"Diretório de imagens não encontrado: {self.images_dir}")
+            raise FileNotFoundError(
+                f"Diretório de imagens não encontrado: {self.images_dir}")
 
-            # Ler o arquivo de anotações
-            with open(label_path, "r") as f:
-                for line in f:
-                    # Parsing da linha (classe, x_center, y_center, width, height)
-                    parts = line.strip().split()
-                    class_id = int(parts[0])
-                    x_center, y_center, width, height = map(float, parts[1:])
+        # Cria o diretório de saída, se não existir
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            logger.info(f"Diretório de saída criado: {output_dir}")
 
-                    # Calcular as coordenadas do bounding box
-                    xmin = int((x_center - width / 2) * IMG_WIDTH)
-                    ymin = int((y_center - height / 2) * IMG_HEIGHT)
-                    xmax = int((x_center + width / 2) * IMG_WIDTH)
-                    ymax = int((y_center + height / 2) * IMG_HEIGHT)
+        images = [os.path.join(self.images_dir, img) for img in os.listdir(
+            self.images_dir) if img.endswith(('.jpg', '.png', '.jpeg'))]
+        if not images:
+            logger.warning(
+                f"Nenhuma imagem encontrada no diretório: {self.images_dir}")
+            return
 
-                    # Obter o nome da classe
-                    class_name = [
-                        name for name, id in class_mapping.items() if id == class_id][0]
+        logger.info(f"Iniciando detecção em {len(images)} imagens...")
+        for img_path in images:
+            logger.info(f"Detectando objetos em: {img_path}")
+            results = self.model(img_path)
 
-                    # Desenhar o bounding box e o nome da classe
-                    cv2.rectangle(img, (xmin, ymin),
-                                  (xmax, ymax), (0, 255, 0), 2)
-                    cv2.putText(img, class_name, (xmin, ymin - 10),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            # Salva as imagens com as bounding boxes
+            if output_dir:
+                for i, result in enumerate(results):
+                    output_path = os.path.join(
+                        output_dir, os.path.basename(img_path))
+                    result.save(output_path)
+                    logger.info(f"Resultado salvo em: {output_path}")
 
-            # Exibir a imagem com Matplotlib
-            plt.figure(figsize=(10, 10))
-            plt.imshow(img)
-            plt.axis('off')  # Não exibir eixos
-            plt.show()
+        logger.info("Detecção concluída.")
 
 
-# Chamar a função para exibir as imagens
-display_images_with_bboxes()
+if __name__ == "__main__":
+    # Caminho para o melhor peso detectado no treinamento
+    best_weights_path = 'E:/APS6/NeuroVis-o/runs/detect/train34/weights/best.pt'
+
+    # Caminho para a pasta de imagens de teste
+    test_images_dir = 'E:/APS6/NeuroVis-o/backend/dataset/images/test'
+
+    # Diretório de saída para salvar as detecções
+    output_dir = 'E:/APS6/NeuroVis-o/runs/detect/detections'
+
+    # Instanciando o detector
+    detector = YOLOv8Detector(
+        weights_path=best_weights_path, images_dir=test_images_dir)
+
+    # Carregando o modelo
+    detector.load_model()
+
+    # Realizando a detecção nas imagens e salvando os resultados
+    detector.detect_images(output_dir=output_dir)

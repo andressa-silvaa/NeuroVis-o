@@ -14,10 +14,11 @@ os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 
 
 class YOLOv8Trainer:
-    def __init__(self, data_yaml, base_dir, model_weights='yolov8n.pt', train_per_run=20):
+    # Alterado para yolov8x.pt
+    def __init__(self, data_yaml, base_dir, model_weights='yolov8x.pt', train_per_run=20):
         self.data_yaml = data_yaml
         self.base_dir = base_dir
-        self.model_weights = model_weights
+        self.model_weights = model_weights  # Usando YOLOv8x
         self.train_per_run = train_per_run  # Quantidade de épocas por execução
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.model = None
@@ -104,17 +105,26 @@ class YOLOv8Trainer:
         try:
             self.model.train(
                 data=self.data_yaml,
-                epochs=self.train_per_run,  # Sempre 20 épocas
-                imgsz=320,
-                batch=4,
+                epochs=self.last_epoch + self.train_per_run,  # Total de épocas
+                imgsz=640,  # Aumentado para 640
+                batch=16,  # Aumentado para 16
                 device=self.device,
                 save=True,
                 save_period=self.train_per_run,  # Salva a cada 20 épocas
                 plots=True,
                 rect=True,
-                workers=0,
-                augment=False,
-                resume=True  # Resume o treinamento corretamente
+                workers=4,  # Aumentado para 4 workers
+                augment=True,  # Ativar aumento de dados
+                resume=True,  # Tenta retomar o treinamento
+                lr0=0.01,  # Taxa de aprendizagem inicial
+                lrf=0.01,  # Taxa de aprendizagem final reduzida
+                momentum=0.937,  # Momentum
+                weight_decay=0.0005,  # Weight decay
+                amp=True,  # Ativar precisão mista
+                patience=10,  # Early stopping após 10 épocas sem melhoria
+                warmup_epochs=3,  # Warmup para as primeiras 3 épocas
+                warmup_momentum=0.8,  # Momentum durante o warmup
+                warmup_bias_lr=0.1  # Taxa de aprendizagem do bias durante o warmup
             )
             self.last_epoch += self.train_per_run  # Atualiza a última época
             logger.info(
@@ -129,16 +139,25 @@ class YOLOv8Trainer:
                 self.model.train(
                     data=self.data_yaml,
                     epochs=self.train_per_run,
-                    imgsz=320,
-                    batch=4,
+                    imgsz=640,
+                    batch=16,
                     device=self.device,
                     save=True,
                     save_period=self.train_per_run,
                     plots=True,
                     rect=True,
-                    workers=0,
-                    augment=False,
-                    resume=False  # Não retomar, iniciar novo treinamento
+                    workers=4,  # Aumentado para 4 workers
+                    augment=True,
+                    resume=False,  # Não retomar, iniciar novo treinamento
+                    lr0=0.01,
+                    lrf=0.01,
+                    momentum=0.937,
+                    weight_decay=0.0005,
+                    amp=True,
+                    patience=10,
+                    warmup_epochs=3,
+                    warmup_momentum=0.8,
+                    warmup_bias_lr=0.1
                 )
                 self.last_epoch = 0  # Reinicia a contagem de épocas
                 logger.info(
@@ -148,7 +167,7 @@ class YOLOv8Trainer:
 if __name__ == "__main__":
     data_yaml = 'E:/APS6/NeuroVis-o/backend/dataset/dataset_config.yaml'
     base_dir = 'E:/APS6/NeuroVis-o/runs/detect'
-    model_weights = 'yolov8n.pt'
+    model_weights = 'yolov8x.pt'  # Alterado para yolov8x.pt
     train_per_run = 20  # Rodar apenas 20 épocas por execução
 
     trainer = YOLOv8Trainer(
