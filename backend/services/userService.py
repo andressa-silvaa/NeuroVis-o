@@ -1,10 +1,13 @@
 from werkzeug.security import generate_password_hash
 from marshmallow import ValidationError
-from flask_jwt_extended import create_access_token
 from models.userModel import User
 from schemas.UserRegistrationSchema import UserRegistrationSchema
 from schemas.userLoginSchema import UserLoginSchema
 from repositories.userRepository import create_user, get_user_by_email
+from flask_jwt_extended import (
+    create_access_token,
+    create_refresh_token  
+)
 
 def validate_registration_data(data):
     schema = UserRegistrationSchema()
@@ -54,9 +57,10 @@ def login_user(email, password):
         if not user.check_password(password):
             raise ValidationError({"password": ["Credenciais inválidas"]})
 
-        access_token = create_access_token(identity=user.UserID)
+        access_token = create_access_token(identity=str(user.UserID)) 
+        refresh_token = create_refresh_token(identity=str(user.UserID))
 
-        return (user, access_token)  
+        return (user, access_token, refresh_token) 
 
     except ValidationError as e:
         raise e
