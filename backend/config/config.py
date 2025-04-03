@@ -7,11 +7,9 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)  
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=7)    
     # Adicione ao config.py
-    AWS_ACCESS_KEY = 'sua_chave'
-    AWS_SECRET_KEY = 'seu_secreto'
-    AWS_BUCKET_NAME = 'seu_bucket'
-    AWS_REGION = 'sua_regiao'
+    IMGUR_CLIENT_ID = 'f74f3693feeb900'  # Obtenha em https://api.imgur.com/oauth2/addclient
+    IMGUR_CLIENT_SECRET = '4f9584bae90e4087a2857da6cb28f0412cc0b403'  # Opcional para uploads autenticados
+    IMGUR_ACCESS_TOKEN = 'seu_access_token'
     # Configurações para processamento de imagens
-    YOLO_WEIGHTS_PATH = 'caminho/para/seu/modelo.pt'
-    PROCESSED_IMAGES_DIR = 'static/processed_images'
-    IMAGES_BASE_URL = 'http://seuservidor.com/static/processed_images'
+    YOLO_WEIGHTS_PATH = 'C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt'
+
