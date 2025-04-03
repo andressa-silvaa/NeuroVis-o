@@ -1,6 +1,4 @@
-/backend/config/config.py
-backend/config/config.py
-.backend/config/config.py
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
