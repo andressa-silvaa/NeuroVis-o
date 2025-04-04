@@ -3,20 +3,18 @@ from datetime import datetime
 
 class Image(db.Model):
     __tablename__ = 'Images'
-    
+    __table_args__ = {'schema': 'dbo'} 
     ImageID = db.Column(db.Integer, primary_key=True)
-    UserID = db.Column(db.Integer, db.ForeignKey('Users.UserID'), nullable=False)
+    UserID = db.Column(db.Integer, db.ForeignKey('dbo.Users.UserID'), nullable=False) 
     ImagePath = db.Column(db.String(500), nullable=False)
     UploadedAt = db.Column(db.DateTime, default=datetime.utcnow)
     
-    recognition_results = db.relationship('ObjectRecognitionResult', backref='image', lazy=True)
+    recognition_results = db.relationship(
+        'ObjectRecognitionResult', 
+        back_populates='image',
+        cascade='all, delete-orphan',
+        lazy=True
+    )
 
-class ObjectRecognitionResult(db.Model):
-    __tablename__ = 'ObjectRecognitionResults'
-    
-    ResultID = db.Column(db.Integer, primary_key=True)
-    ImageID = db.Column(db.Integer, db.ForeignKey('Images.ImageID'), nullable=False)
-    RecognizedObjects = db.Column(db.Text, nullable=False)
-    ProcessedImagePath = db.Column(db.String(500), nullable=False)
-    AnalyzedAt = db.Column(db.DateTime, default=datetime.utcnow)
-    Accuracy = db.Column(db.Float, nullable=False)
+    def __repr__(self):
+        return f'<Image {self.ImageID}>'

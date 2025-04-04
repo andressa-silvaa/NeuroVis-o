@@ -1,0 +1,2 @@
+2025-04-04 11:03:40,809 - __main__ - WARNING - Token expirado tentou acessar: {'fresh': False, 'iat': 1743772642, 'jti': '96be7782-627d-4c54-b128-925d3fc7f6c2', 'type': 'access', 'sub': '7', 'nbf': 1743772642, 'csrf': '842e098f-5723-4d30-b4d9-6c2668040c4e', 'exp': 1743774442}
+2025-04-04 11:03:40,810 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 11:03:40] "[31m[1mPOST /api/neural/analyze HTTP/1.1[0m" 401 -

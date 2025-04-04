@@ -1,8 +1,13 @@
 from extensions import db
-from models.imageModel import Image, ObjectRecognitionResult
+from models.imageModel import Image
+from models.ObjectRecognitionResultModel import ObjectRecognitionResult
 from datetime import datetime
+import json
 
-def save_image(user_id, image_path):
+def save_image(user_id: int, image_path: str) -> int:
+    """
+    Salva a imagem no banco de dados e retorna o ID
+    """
     try:
         new_image = Image(
             UserID=user_id,
@@ -16,13 +21,27 @@ def save_image(user_id, image_path):
         db.session.rollback()
         raise e
 
-def save_recognition_result(image_id, recognized_objects, processed_image_path, accuracy):
+def save_recognition_result(
+    image_id: int,
+    recognized_objects: list,
+    processed_image_path: str,
+    accuracy: float,
+    precision: float,
+    recall: float, 
+    inference_time: float
+) -> int:
+    """
+    Salva os resultados da análise com todas as novas métricas
+    """
     try:
         new_result = ObjectRecognitionResult(
             ImageID=image_id,
-            RecognizedObjects=str(recognized_objects),  # Serializa como string
+            RecognizedObjects=json.dumps(recognized_objects), 
             ProcessedImagePath=processed_image_path,
             Accuracy=accuracy,
+            Precision=precision,
+            Recall=recall, 
+            InferenceTimeMs=inference_time,
             AnalyzedAt=datetime.utcnow()
         )
         db.session.add(new_result)
