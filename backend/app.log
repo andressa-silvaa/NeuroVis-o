@@ -1,2 +1,86 @@
-2025-04-04 11:03:40,809 - __main__ - WARNING - Token expirado tentou acessar: {'fresh': False, 'iat': 1743772642, 'jti': '96be7782-627d-4c54-b128-925d3fc7f6c2', 'type': 'access', 'sub': '7', 'nbf': 1743772642, 'csrf': '842e098f-5723-4d30-b4d9-6c2668040c4e', 'exp': 1743774442}
-2025-04-04 11:03:40,810 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 11:03:40] "[31m[1mPOST /api/neural/analyze HTTP/1.1[0m" 401 -
+2025-04-04 13:59:03,481 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:03] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-04 13:59:03,930 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:03] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-04 13:59:47,149 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:47] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-04 13:59:47,666 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:47] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-04 13:59:57,425 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:57] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-04 13:59:57,946 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:57] "[31m[1mPOST /api/users/login HTTP/1.1[0m" 401 -
+2025-04-04 14:10:54,086 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\services\\userService.py', reloading
+2025-04-04 14:10:56,227 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:10:56,842 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:11:00,094 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:11:00,321 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:11:00,326 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:11:00,629 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:11:00,637 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:11:00,640 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:11:09,975 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-04 14:11:10,404 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:11:10,810 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:11:12,850 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:11:13,036 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:11:13,038 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:11:13,075 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:11:13,083 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:11:13,085 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:11:18,287 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-04 14:11:18,679 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:11:19,096 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:11:21,200 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:11:21,645 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:11:21,647 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:11:21,679 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:11:21,685 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:11:21,687 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:11:22,758 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-04 14:11:23,143 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:11:23,551 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:11:25,594 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:11:25,791 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:11:25,793 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:11:25,828 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:11:25,834 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:11:25,837 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:11:46,460 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\config\\config.py', reloading
+2025-04-04 14:11:46,906 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:11:47,328 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:11:49,419 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:11:49,791 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:11:49,794 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:11:49,986 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:11:50,003 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:11:50,007 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:11:51,316 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:11:51] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-04 14:14:18,195 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-04 14:14:19,906 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:14:20,360 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:14:22,446 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:14:22,812 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:14:22,817 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:14:23,245 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:14:23,253 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:14:23,256 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:14:24,346 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-04 14:14:24,767 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:14:25,167 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:14:27,186 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:14:27,534 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:14:27,538 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:14:27,714 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:14:27,729 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:14:27,734 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:14:44,903 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:14:44] "POST /api/users/refresh HTTP/1.1" 200 -
+2025-04-04 14:19:50,035 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:19:50] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-04 14:19:58,171 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:19:58] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-04 14:20:43,393 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:20:43] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-04 14:21:20,930 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\app.py', reloading
+2025-04-04 14:21:21,339 - werkzeug - INFO -  * Restarting with stat
+2025-04-04 14:21:21,876 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-04 14:21:23,972 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-04 14:21:24,163 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-04 14:21:24,167 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-04 14:21:24,506 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-04 14:21:24,524 - werkzeug - WARNING -  * Debugger is active!
+2025-04-04 14:21:24,528 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-04 14:21:24,767 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:21:24] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-04 14:21:25,213 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:21:25] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-04 14:23:32,085 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading

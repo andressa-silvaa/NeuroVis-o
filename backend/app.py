@@ -4,6 +4,7 @@ from extensions import db
 from flask_jwt_extended import JWTManager
 import logging
 from datetime import datetime
+from flask_cors import CORS
 
 def configure_logging():
     """Configuração centralizada de logging"""
@@ -21,6 +22,7 @@ def create_app():
     """Factory principal da aplicação Flask"""
     app = Flask(__name__)
     app.config.from_object(Config)
+    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:4200"}})
     
     logger = configure_logging()
     

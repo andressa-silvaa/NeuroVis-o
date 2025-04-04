@@ -8,4 +8,20 @@
     background-position: center center;
 }
 
+/* Estilos personalizados para toastr */
+.toast-success {
+    background-color: #51a351 !important;
+  }
+  
+  .toast-error {
+    background-color: #bd362f !important;
+  }
+  
+  .toast-warning {
+    background-color: #f89406 !important;
+  }
+  
+  .toast-info {
+    background-color: #2f96b4 !important;
+  }
 

@@ -25,13 +25,13 @@ def register():
     except ValidationError as e:
         return jsonify({
             "error": "Erro de validação",
-            "details": e.messages  
-        }), 400
+            "details": e.messages 
+        }), 400, {'Content-Type': 'application/json'}
         
     except Exception as e:
         return jsonify({
             "error": "Erro ao criar usuário",
-            "message": str(e)
+            "message": "Algo deu errado; por favor, tente novamente mais tarde."
         }), 500
 
 @user_bp.route('/login', methods=['POST'])
@@ -43,16 +43,19 @@ def login():
             
         user, access_token, refresh_token = login_user(data.get('email'), data.get('password'))
         
-        return jsonify({
+        response = jsonify({
             "message": "Login bem-sucedido",
-            "access_token": access_token,
-            "refresh_token": refresh_token, 
             "user": {
                 "id": user.UserID,
                 "name": user.FullName,
                 "email": user.Email
             }
-        }), 200
+        })
+        
+        response.set_cookie('access_token', access_token, httponly=True, secure=True, samesite='Lax')
+        response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True, samesite='Lax')
+        
+        return response, 200
         
     except ValidationError as e:
         return jsonify({
@@ -73,7 +76,17 @@ def refresh():
     try:
         current_user_id = get_jwt_identity()  
         new_token = create_access_token(identity=current_user_id)
-        return jsonify(access_token=new_token), 200
+
+        response = jsonify({"message": "Token renovado com sucesso"})
+        response.set_cookie('access_token', new_token, httponly=True, secure=True, samesite='Lax')
+
+        return response, 200
         
     except Exception as e:
         return jsonify({"error": "Falha ao renovar token", "message": str(e)}), 401
+    
+@user_bp.route('auth/check', methods=['GET'])
+@jwt_required()
+def check_auth():
+    current_user = get_jwt_identity()
+    return jsonify({"authenticated": True, "user": current_user}), 200

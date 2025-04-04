@@ -1,11 +1,12 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component'; 
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-upload-image',
   standalone: true,
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, RouterModule],
   templateUrl: './upload-image.component.html',
   styleUrls: ['./upload-image.component.css']
 })
