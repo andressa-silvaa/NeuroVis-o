@@ -85,8 +85,22 @@ def refresh():
     except Exception as e:
         return jsonify({"error": "Falha ao renovar token", "message": str(e)}), 401
     
-@user_bp.route('auth/check', methods=['GET'])
+@user_bp.route('/auth/check', methods=['GET'])
 @jwt_required()
 def check_auth():
     current_user = get_jwt_identity()
     return jsonify({"authenticated": True, "user": current_user}), 200
+
+
+@user_bp.route('/logout', methods=['POST'])
+@jwt_required()  
+def logout():
+    try:
+        response = jsonify({"message": "Logout bem-sucedido"})
+        response.delete_cookie('access_token', httponly=True, secure=True, samesite='Lax')
+        response.delete_cookie('refresh_token', httponly=True, secure=True, samesite='Lax')
+
+        return response, 200
+    
+    except Exception as e:
+        return jsonify({"error": "Erro ao realizar logout", "message": str(e)}), 500

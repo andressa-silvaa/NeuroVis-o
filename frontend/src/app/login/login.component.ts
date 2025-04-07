@@ -20,11 +20,6 @@ export class LoginComponent {
 
   onSubmit(form: any) {
     if (form.valid) {
-      const loginData = {
-        email: this.emailInput,
-        password: this.senhaInput
-      };
-
       this.authService.login(this.emailInput, this.senhaInput).subscribe({
         next: (response) => {
           this.toastr.success('Login realizado com sucesso!', 'Sucesso');
