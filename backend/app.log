@@ -1,277 +1,199 @@
-2025-04-04 13:59:03,481 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:03] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 13:59:03,930 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:03] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 13:59:47,149 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:47] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 13:59:47,666 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:47] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 13:59:57,425 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:57] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 13:59:57,946 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 13:59:57] "[31m[1mPOST /api/users/login HTTP/1.1[0m" 401 -
-2025-04-04 14:10:54,086 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\services\\userService.py', reloading
-2025-04-04 14:10:56,227 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:10:56,842 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:11:00,094 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:11:00,321 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:11:00,326 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:11:00,629 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:11:00,637 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:11:00,640 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:11:09,975 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-04 14:11:10,404 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:11:10,810 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:11:12,850 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:11:13,036 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:11:13,038 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:11:13,075 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:11:13,083 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:11:13,085 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:11:18,287 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-04 14:11:18,679 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:11:19,096 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:11:21,200 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:11:21,645 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:11:21,647 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:11:21,679 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:11:21,685 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:11:21,687 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:11:22,758 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-04 14:11:23,143 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:11:23,551 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:11:25,594 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:11:25,791 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:11:25,793 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:11:25,828 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:11:25,834 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:11:25,837 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:11:46,460 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\config\\config.py', reloading
-2025-04-04 14:11:46,906 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:11:47,328 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:11:49,419 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:11:49,791 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:11:49,794 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:11:49,986 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:11:50,003 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:11:50,007 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:11:51,316 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:11:51] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:14:18,195 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-04 14:14:19,906 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:14:20,360 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:14:22,446 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:14:22,812 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:14:22,817 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:14:23,245 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:14:23,253 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:14:23,256 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:14:24,346 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-04 14:14:24,767 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:14:25,167 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:14:27,186 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:14:27,534 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:14:27,538 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:14:27,714 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:14:27,729 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:14:27,734 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:14:44,903 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:14:44] "POST /api/users/refresh HTTP/1.1" 200 -
-2025-04-04 14:19:50,035 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:19:50] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:19:58,171 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:19:58] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:20:43,393 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:20:43] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:21:20,930 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\app.py', reloading
-2025-04-04 14:21:21,339 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:21:21,876 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:21:23,972 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:21:24,163 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:21:24,167 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:21:24,506 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:21:24,524 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:21:24,528 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:21:24,767 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:21:24] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:21:25,213 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:21:25] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:23:32,085 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-04 14:23:32,505 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:23:32,898 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:23:34,873 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:23:35,057 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:23:35,061 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:23:35,543 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:23:35,554 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:23:35,556 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:24:56,872 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:24:56] "GET /api/users/auth/check HTTP/1.1" 200 -
-2025-04-04 14:38:24,096 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:38:24] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 14:38:32,190 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:38:32] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:38:32,514 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:38:32] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:38:32,827 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:38:32] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 14:48:33,839 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-04 14:48:34,240 - werkzeug - INFO -  * Restarting with stat
-2025-04-04 14:48:34,663 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-04 14:48:36,859 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-04 14:48:37,072 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-04 14:48:37,074 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-04 14:48:37,300 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-04 14:48:37,309 - werkzeug - WARNING -  * Debugger is active!
-2025-04-04 14:48:37,310 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-04 14:49:36,003 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:49:36] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:50:12,877 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:50:12] "POST /api/users/logout HTTP/1.1" 200 -
-2025-04-04 14:51:32,922 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:51:32] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:51:33,381 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:51:33] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:51:33,496 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:51:33] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 14:53:54,164 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:53:54] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:53:54,668 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:53:54] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:53:54,741 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:53:54] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 14:58:25,952 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:58:25] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:58:26,506 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:58:26] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:58:26,523 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:58:26] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 14:59:01,369 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:59:01] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:59:01,877 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:59:01] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 14:59:01,934 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 14:59:01] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 15:00:52,702 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:00:52] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:00:53,212 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:00:53] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:00:53,283 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:00:53] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 15:02:03,046 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:02:03] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:02:03,520 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:02:03] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:02:03,628 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:02:03] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 15:03:45,704 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:03:45] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:03:46,324 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:03:46] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:03:46,330 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:03:46,331 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:03:46] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:05:44,167 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:44] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:05:44,668 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:44] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:05:44,679 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:44] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
-2025-04-04 15:05:44,744 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:05:44,746 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:44] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:05:44,995 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:44] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
-2025-04-04 15:05:44,998 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:05:45,000 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:45] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:05:45,057 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:45] "OPTIONS /api/users/refresh HTTP/1.1" 200 -
-2025-04-04 15:05:45,321 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:45] "OPTIONS /api/users/refresh HTTP/1.1" 200 -
-2025-04-04 15:05:45,367 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:05:45,370 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:45] "[31m[1mPOST /api/users/refresh HTTP/1.1[0m" 401 -
-2025-04-04 15:05:45,630 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:05:45,632 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:05:45] "[31m[1mPOST /api/users/refresh HTTP/1.1[0m" 401 -
-2025-04-04 15:47:35,874 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:47:35] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:47:36,489 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:47:36] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:47:52,063 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:47:52] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 15:48:21,584 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:48:21] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:48:22,208 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:48:22] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:48:22,216 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:48:22,217 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:48:22] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:48:31,515 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:48:31] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:48:32,081 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:48:32] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:48:32,086 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:48:32,087 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:48:32] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:48:55,119 - __main__ - WARNING - Token expirado tentou acessar: {'fresh': False, 'iat': 1743786711, 'jti': '2caf640c-b48c-4516-8557-302f124421da', 'type': 'access', 'sub': '7', 'nbf': 1743786711, 'csrf': '252b99f8-5a90-4807-ab05-0aca07340064', 'exp': 1743788511}
-2025-04-04 15:48:55,121 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:48:55] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:49:05,351 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:49:05] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:49:36,259 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:49:36] "GET /api/users/auth/check HTTP/1.1" 200 -
-2025-04-04 15:50:46,326 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:50:46] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:50:46,926 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:50:46] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:50:46,932 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:50:46,932 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:50:46] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:53:40,265 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:53:40] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:53:40,879 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:53:40] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:53:40,887 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:53:40,887 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:53:40] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:53:41,217 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:53:41,218 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:53:41] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:55:48,483 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:55:48] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:55:49,093 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:55:49] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:55:49,101 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:55:49] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 15:56:21,449 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:56:21] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:56:21,887 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:56:21] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:56:22,019 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:56:22,020 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:56:22] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:59:53,100 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:59:53] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:59:53,710 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:59:53] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 15:59:53,719 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:59:53,720 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:59:53] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 15:59:54,030 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 15:59:54,032 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 15:59:54] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 16:02:09,376 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:02:09] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:02:10,010 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:02:10] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:02:10,025 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 16:02:10,026 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:02:10] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 16:02:10,334 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 16:02:10,336 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:02:10] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-04 16:05:28,299 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:05:28] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:05:28,879 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:05:28] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:05:28,889 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:05:28] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 16:05:29,207 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:05:29] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 16:07:29,797 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:07:29] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:07:30,427 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:07:30] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:07:30,444 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:07:30] "[33mGET /api/auth/check HTTP/1.1[0m" 404 -
-2025-04-04 16:08:07,176 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:08:07] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:08:08,678 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:08:08] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-04 16:08:08,771 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-04 16:08:08,775 - werkzeug - INFO - 127.0.0.1 - - [04/Apr/2025 16:08:08] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-07 08:03:25,920 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-07 08:03:29,866 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-07 08:03:30,083 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-07 08:03:30,085 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-07 08:03:30,335 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-07 08:03:30,371 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on all addresses (0.0.0.0)
- * Running on http://127.0.0.1:5000
- * Running on http://192.168.0.15:5000
-2025-04-07 08:03:30,371 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2025-04-07 08:03:30,373 - werkzeug - INFO -  * Restarting with stat
-2025-04-07 08:03:30,852 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-07 08:03:33,081 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-07 08:03:33,442 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-07 08:03:33,444 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-07 08:03:33,484 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-07 08:03:33,495 - werkzeug - WARNING -  * Debugger is active!
-2025-04-07 08:03:33,497 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-07 08:08:39,923 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:08:39] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:08:40,385 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:08:40] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:08:40,496 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-07 08:08:40,497 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:08:40] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-07 08:10:34,059 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
-2025-04-07 08:10:35,085 - werkzeug - INFO -  * Restarting with stat
-2025-04-07 08:10:35,630 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-07 08:10:37,968 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-07 08:10:38,172 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-07 08:10:38,177 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-07 08:10:38,424 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-07 08:10:38,434 - werkzeug - WARNING -  * Debugger is active!
-2025-04-07 08:10:38,436 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-07 08:10:42,017 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:10:42] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:10:42,443 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:10:42] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:10:42,588 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-07 08:10:42,589 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:10:42] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-07 08:17:54,366 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\app.py', reloading
-2025-04-07 08:17:54,787 - werkzeug - INFO -  * Restarting with stat
-2025-04-07 08:17:56,150 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-07 08:18:01,119 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-07 08:18:01,528 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-07 08:18:01,532 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-07 08:18:01,789 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-07 08:18:01,804 - werkzeug - WARNING -  * Debugger is active!
-2025-04-07 08:18:01,807 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-07 08:18:09,858 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:18:09] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:18:10,281 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:18:10] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:18:10,435 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-07 08:18:10,437 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:18:10] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-07 08:18:10,591 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-07 08:18:10,593 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:18:10] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-07 08:18:20,486 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\app.py', reloading
-2025-04-07 08:18:20,868 - werkzeug - INFO -  * Restarting with stat
-2025-04-07 08:18:21,319 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-07 08:18:23,205 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-07 08:18:23,401 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-07 08:18:23,406 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-07 08:18:24,115 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-07 08:18:24,132 - werkzeug - WARNING -  * Debugger is active!
-2025-04-07 08:18:24,136 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-07 08:22:38,760 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\config\\config.py', reloading
-2025-04-07 08:22:40,875 - werkzeug - INFO -  * Restarting with stat
-2025-04-07 08:22:44,191 - __main__ - INFO - Extensões inicializadas com sucesso
-2025-04-07 08:22:47,588 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
-2025-04-07 08:22:48,017 - services.neuralNetworkService - INFO - Serviço neural configurado
-2025-04-07 08:22:48,025 - __main__ - INFO - Blueprints registrados com sucesso
-2025-04-07 08:22:48,346 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
-2025-04-07 08:22:48,358 - werkzeug - WARNING -  * Debugger is active!
-2025-04-07 08:22:48,360 - werkzeug - INFO -  * Debugger PIN: 239-062-199
-2025-04-07 08:22:50,128 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:22:50] "OPTIONS /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:22:50,566 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:22:50] "POST /api/users/login HTTP/1.1" 200 -
-2025-04-07 08:22:50,570 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:22:50] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
-2025-04-07 08:22:50,692 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-07 08:22:50,693 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:22:50] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-07 08:22:50,877 - __main__ - WARNING - Tentativa de acesso não autorizado
-2025-04-07 08:22:50,879 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:22:50] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
-2025-04-07 08:24:13,466 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\config\\config.py', reloading
+2025-04-07 08:42:37,258 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\app.py', reloading
+2025-04-07 08:42:37,798 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 08:42:38,341 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 08:42:40,878 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 08:42:41,059 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 08:42:41,064 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 08:42:41,335 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 08:42:41,345 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 08:42:41,348 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 08:51:42,235 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:51:42] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:51:42,767 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:51:42] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:51:42,775 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:51:42] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 08:51:42,807 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 08:51:42,809 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:51:42] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 08:51:43,091 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 08:51:43,093 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:51:43] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 08:53:51,872 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-07 08:53:53,130 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 08:53:53,548 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 08:53:55,658 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 08:53:56,101 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 08:53:56,107 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 08:53:56,406 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 08:53:56,414 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 08:53:56,416 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 08:53:59,085 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:53:59] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:53:59,567 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:53:59] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:53:59,571 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:53:59] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 08:53:59,663 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 08:53:59,664 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:53:59] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 08:53:59,883 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 08:53:59,884 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:53:59] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 08:54:41,126 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-07 08:54:42,102 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 08:54:42,527 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 08:54:44,556 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 08:54:45,033 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 08:54:45,038 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 08:54:45,326 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 08:54:45,342 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 08:54:45,346 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 08:55:56,750 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:55:56] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:55:57,327 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:55:57] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:55:57,339 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:55:57] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 08:55:57,342 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 08:55:57,342 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:55:57] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 08:56:57,677 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:56:57] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:56:58,192 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:56:58] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 08:56:58,200 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:56:58] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 08:56:58,252 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 08:56:58,254 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 08:56:58] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:00:07,862 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:00:07] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:00:08,453 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:00:08] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:00:08,480 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:00:08] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:00:08,485 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:00:08,489 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:00:08] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:01:34,379 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:01:34] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:01:34,905 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:01:34] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:01:34,919 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:01:34] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:01:34,949 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:01:34,953 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:01:34] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:02:52,641 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:02:52] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:02:53,229 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:02:53] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:02:53,238 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:02:53] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:02:53,242 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:02:53,243 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:02:53] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:02:53,556 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:02:53,558 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:02:53] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:08:39,011 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:08:39] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:12:49,352 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:12:49] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:12:49,847 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:12:49] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:12:49,858 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:12:49] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:12:49,931 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:12:49,933 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:12:49] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:12:50,168 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:12:50,169 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:12:50] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:17:06,960 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:17:06] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:17:07,544 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:17:07] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:17:07,557 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:17:07] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:17:07,560 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:17:07,563 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:17:07] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:17:07,877 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:17:07,880 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:17:07] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:30:10,797 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:30:10] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:30:11,361 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:30:11] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:30:11,389 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:30:11] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:30:11,393 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:30:11,395 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:30:11] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:53:53,919 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-07 09:53:55,573 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 09:53:56,413 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 09:54:01,154 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 09:54:01,438 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 09:54:01,445 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 09:54:01,805 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 09:54:01,844 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 09:54:01,850 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 09:54:02,337 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:54:02] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:54:02,938 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:54:02] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:54:02,953 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:54:02] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:54:02,955 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:54:02,956 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:54:02] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:58:14,197 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-07 09:58:15,221 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 09:58:15,654 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 09:58:17,649 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 09:58:17,844 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 09:58:17,849 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 09:58:18,147 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 09:58:18,162 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 09:58:18,165 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 09:58:40,463 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:58:40] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:58:41,007 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:58:41] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 09:58:41,015 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:58:41] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 09:58:41,048 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:58:41,052 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:58:41] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 09:58:41,330 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 09:58:41,332 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 09:58:41] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:00:58,431 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:00:58] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:00:58,990 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:00:58] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:00:59,005 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:00:59] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:00:59,014 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:00:59,017 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:00:59] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:00:59,322 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:00:59,322 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:00:59] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:17:36,469 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:17:36] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:17:36,990 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:17:36] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:17:36,996 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:17:36] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:17:37,042 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:17:37,046 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:17:37] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:17:37,307 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:17:37,308 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:17:37] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:18:07,587 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:18:07] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:18:07,821 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:18:07] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:18:07,850 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:18:07] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:18:08,129 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:18:08] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:18:08,162 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:18:08,164 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:18:08] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:18:08,426 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:18:08,427 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:18:08] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:20:08,986 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:20:08] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:20:09,563 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:20:09] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:20:09,575 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:20:09] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:20:09,578 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:20:09,580 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:20:09] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:20:09,903 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:20:09,905 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:20:09] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:21:28,284 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:21:28] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:21:28,882 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:21:28] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:21:28,893 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:21:28] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:21:28,896 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:21:28,899 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:21:28] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:21:29,216 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:21:29,218 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:21:29] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:30:12,273 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-07 10:30:12,715 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 10:30:13,127 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 10:30:15,289 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 10:30:15,727 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 10:30:15,732 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 10:30:16,078 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 10:30:16,092 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 10:30:16,096 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 10:30:16,231 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:30:16] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:30:23,240 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:30:23] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:30:23,717 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:30:23] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:30:23,725 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:30:23] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:30:23,815 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:30:23,816 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:30:23] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:30:24,035 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:30:24,037 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:30:24] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:32:00,069 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:32:00] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:32:00,581 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:32:00] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:32:00,590 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:32:00] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 10:32:00,643 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:32:00,645 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:32:00] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:32:00,903 - __main__ - WARNING - Tentativa de acesso não autorizado
+2025-04-07 10:32:00,904 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:32:00] "[31m[1mGET /api/users/auth/check HTTP/1.1[0m" 401 -
+2025-04-07 10:34:52,030 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-07 10:34:53,469 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 10:34:53,901 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 10:34:56,002 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 10:34:56,195 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 10:34:56,201 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 10:34:56,466 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 10:34:56,475 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 10:34:56,477 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 10:36:32,448 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\controllers\\userController.py', reloading
+2025-04-07 10:36:33,661 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 10:36:34,114 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 10:36:36,231 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 10:36:36,673 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 10:36:36,679 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 10:36:37,047 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 10:36:37,064 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 10:36:37,073 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 10:36:37,198 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:36:37] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:36:39,337 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:36:39] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 10:36:45,515 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:36:45] "[31m[1mPOST /api/users/register HTTP/1.1[0m" 400 -

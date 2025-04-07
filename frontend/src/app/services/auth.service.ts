@@ -17,43 +17,39 @@ export class AuthService {
   ) {}
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/users/login`, { email, password }, { withCredentials: true }).pipe(
+    return this.http.post(`${this.baseUrl}/users/login`, { email, password }).pipe(
       tap((response: any) => {
+        this.storeTokens(response);
         this.authStateService.setAuthenticated(true);
-        this.isAuthenticated().subscribe();
       }),
       catchError(error => {
-        console.error('Erro ao realizar login:', error);
         return throwError(error);
       })
     );
   }
 
   logout(): void {
-    this.http.post(`${this.baseUrl}/users/logout`, {}, { withCredentials: true }).subscribe({
-      next: () => {
-        this.authStateService.setAuthenticated(false);
-      },
-      error: (error) => {
-        console.error('Erro ao realizar logout:', error); // Log de erro
-      }
-    });
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    this.authStateService.setAuthenticated(false);
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/users/auth/check`, { 
-      withCredentials: true,
+    const token = this.getAccessToken();
+    if (!token) {
+      return of({ authenticated: false });
+    }
+    
+    return this.http.get<any>(`${this.baseUrl}/users/auth/check`, {
       headers: {
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
+        'Authorization': `Bearer ${token}` 
       }
     }).pipe(
       tap(response => {
-        console.log('Autenticação verificada:', response);
         this.authStateService.setAuthenticated(response.authenticated);
       }),
       catchError(error => {
-        console.error('Erro na verificação:', error);
         this.authStateService.setAuthenticated(false);
         return of({ authenticated: false, error: error.message });
       })
@@ -61,14 +57,37 @@ export class AuthService {
   }
 
   refreshAccessToken(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/users/refresh`, {}, { withCredentials: true }).pipe(
-      tap(response => {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken) {
+      this.logout();
+      return throwError(() => new Error('No refresh token available'));
+    }
+
+    return this.http.post(`${this.baseUrl}/users/refresh`, {}, {
+      headers: {
+        'Authorization': `Bearer ${refreshToken}`
+      }
+    }).pipe(
+      tap((response: any) => {
+        localStorage.setItem('access_token', response.access_token);
       }),
       catchError(error => {
-        console.error('Erro ao atualizar token de acesso:', error); // Log de erro
         this.logout(); 
         return throwError(error);
       })
     );
+  }
+
+  private storeTokens(response: any): void {
+    localStorage.setItem('access_token', response.access_token);
+    localStorage.setItem('refresh_token', response.refresh_token);
+  }
+
+  getAccessToken(): string | null {
+    return localStorage.getItem('access_token');
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem('refresh_token');
   }
 }

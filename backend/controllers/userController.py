@@ -26,7 +26,7 @@ def register():
         return jsonify({
             "error": "Erro de validação",
             "details": e.messages 
-        }), 400, {'Content-Type': 'application/json'}
+        }), 400
         
     except Exception as e:
         return jsonify({
@@ -43,19 +43,16 @@ def login():
             
         user, access_token, refresh_token = login_user(data.get('email'), data.get('password'))
         
-        response = jsonify({
+        return jsonify({
             "message": "Login bem-sucedido",
             "user": {
                 "id": user.UserID,
                 "name": user.FullName,
                 "email": user.Email
-            }
-        })
-        
-        response.set_cookie('access_token', access_token, httponly=True, secure=True, samesite='Lax')
-        response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True, samesite='Lax')
-        
-        return response, 200
+            },
+            "access_token": access_token,
+            "refresh_token": refresh_token
+        }), 200
         
     except ValidationError as e:
         return jsonify({
@@ -69,7 +66,6 @@ def login():
             "message": str(e)
         }), 500
 
-
 @user_bp.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)  
 def refresh():
@@ -77,10 +73,10 @@ def refresh():
         current_user_id = get_jwt_identity()  
         new_token = create_access_token(identity=current_user_id)
 
-        response = jsonify({"message": "Token renovado com sucesso"})
-        response.set_cookie('access_token', new_token, httponly=True, secure=True, samesite='Lax')
-
-        return response, 200
+        return jsonify({
+            "message": "Token renovado com sucesso",
+            "access_token": new_token
+        }), 200
         
     except Exception as e:
         return jsonify({"error": "Falha ao renovar token", "message": str(e)}), 401
@@ -91,16 +87,11 @@ def check_auth():
     current_user = get_jwt_identity()
     return jsonify({"authenticated": True, "user": current_user}), 200
 
-
 @user_bp.route('/logout', methods=['POST'])
 @jwt_required()  
 def logout():
     try:
-        response = jsonify({"message": "Logout bem-sucedido"})
-        response.delete_cookie('access_token', httponly=True, secure=True, samesite='Lax')
-        response.delete_cookie('refresh_token', httponly=True, secure=True, samesite='Lax')
-
-        return response, 200
+        return jsonify({"message": "Logout bem-sucedido"}), 200
     
     except Exception as e:
         return jsonify({"error": "Erro ao realizar logout", "message": str(e)}), 500

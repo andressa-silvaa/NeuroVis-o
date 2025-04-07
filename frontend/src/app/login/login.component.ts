@@ -1,3 +1,4 @@
+// login.component.ts
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgClass } from '@angular/common';
@@ -16,7 +17,11 @@ export class LoginComponent {
   emailInput: string = '';  
   senhaInput: string = ''; 
 
-  constructor(private router: Router, private authService: AuthService, private toastr: ToastrService) { }
+  constructor(
+    private router: Router, 
+    private authService: AuthService, 
+    private toastr: ToastrService
+  ) { }
 
   onSubmit(form: any) {
     if (form.valid) {
