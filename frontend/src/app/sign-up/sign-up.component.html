@@ -1,4 +1,10 @@
-<div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center fundo-login">
+<div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center fundo-login fundo-login position-relative">
+    <div *ngIf="isLoading" class="overlay-dark"></div>
+    <div *ngIf="isLoading" class="spinner-overlay">
+        <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     <h1 class="mb-5">Registro</h1> 
     <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" class="fundo-form-login d-flex flex-column justify-content-center align-items-center" style="height: 80%;">
         <div class="row mb-3 align-items-center justify-content-center div-registro" style="width: 70%;">

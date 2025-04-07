@@ -29,8 +29,8 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('refresh_token');
     this.authStateService.setAuthenticated(false);
     this.router.navigate(['/login']);
   }
@@ -69,7 +69,7 @@ export class AuthService {
       }
     }).pipe(
       tap((response: any) => {
-        localStorage.setItem('access_token', response.access_token);
+        sessionStorage.setItem('access_token', response.access_token);
       }),
       catchError(error => {
         this.logout(); 
@@ -79,15 +79,15 @@ export class AuthService {
   }
 
   private storeTokens(response: any): void {
-    localStorage.setItem('access_token', response.access_token);
-    localStorage.setItem('refresh_token', response.refresh_token);
+    sessionStorage.setItem('access_token', response.access_token);
+    sessionStorage.setItem('refresh_token', response.refresh_token);
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem('access_token');
+    return sessionStorage.getItem('access_token');
   }
 
   getRefreshToken(): string | null {
-    return localStorage.getItem('refresh_token');
+    return sessionStorage.getItem('refresh_token');
   }
 }

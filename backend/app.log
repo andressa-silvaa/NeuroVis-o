@@ -197,3 +197,112 @@
 2025-04-07 10:36:37,198 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:36:37] "POST /api/users/login HTTP/1.1" 200 -
 2025-04-07 10:36:39,337 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:36:39] "POST /api/users/login HTTP/1.1" 200 -
 2025-04-07 10:36:45,515 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 10:36:45] "[31m[1mPOST /api/users/register HTTP/1.1[0m" 400 -
+2025-04-07 11:23:11,933 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 11:23:14,353 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 11:23:14,554 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 11:23:14,559 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 11:23:14,876 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 11:23:14,901 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.15:5000
+2025-04-07 11:23:14,901 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-07 11:23:14,902 - werkzeug - INFO -  * Restarting with stat
+2025-04-07 11:23:15,347 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-07 11:23:17,415 - services.detectObjectService - INFO - Carregando modelo de C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt
+2025-04-07 11:23:17,591 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-07 11:23:17,598 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-07 11:23:17,631 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-07 11:23:17,637 - werkzeug - WARNING -  * Debugger is active!
+2025-04-07 11:23:17,639 - werkzeug - INFO -  * Debugger PIN: 239-062-199
+2025-04-07 11:23:27,052 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:23:27] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:24:55,127 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:24:55] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:24:55,693 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:24:55] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:24:55,715 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:24:55] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:24:56,029 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:24:56] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:34:22,471 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:34:22] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:34:22,946 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:34:22] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:34:22,963 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:34:22] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:34:23,282 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:34:23] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:35:10,222 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:35:10] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:35:10,534 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:35:10] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:35:23,531 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:35:23] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:35:24,056 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:35:24] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:35:24,113 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:35:24] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:35:24,378 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:35:24] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:39:43,568 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:39:43] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:39:44,080 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:39:44] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:39:44,098 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:39:44] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:39:44,414 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:39:44] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:40:05,382 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:05] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:40:05,689 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:05] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:40:23,033 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:23] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:40:23,353 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:23] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:40:29,397 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:29] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:40:29,969 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:29] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:40:29,986 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:29] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:40:30,294 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:40:30] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:42:01,949 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:01] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:42:02,211 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:02] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:42:09,299 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:09] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:42:09,865 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:09] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:42:09,881 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:09] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:42:10,196 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:10] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:42:36,577 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:36] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:42:37,284 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:37] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:42:37,296 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:37] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:42:37,611 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:42:37] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:43:46,767 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:43:46] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:43:47,273 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:43:47] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:43:47,298 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:43:47] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:43:47,615 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:43:47] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:45:08,347 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:45:08] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:45:08,608 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:45:08] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:47:06,746 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:06] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:47:07,009 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:07] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:47:34,349 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:34] "OPTIONS /api/users/register HTTP/1.1" 200 -
+2025-04-07 11:47:34,990 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:34] "[35m[1mPOST /api/users/register HTTP/1.1[0m" 201 -
+2025-04-07 11:47:57,888 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:57] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:47:58,368 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:58] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:47:58,475 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:58] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:47:58,692 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:47:58] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:14,157 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:14] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:56:14,709 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:14] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:56:14,731 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:14] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:15,053 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:15] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:17,401 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:17] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:19,502 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:19] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:19,856 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:19] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:20,169 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:20] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:20,487 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:20] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:56:21,398 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:56:21] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:59:08,496 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:08] "OPTIONS /api/users/register HTTP/1.1" 200 -
+2025-04-07 11:59:08,780 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:08] "[31m[1mPOST /api/users/register HTTP/1.1[0m" 400 -
+2025-04-07 11:59:12,908 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:12] "[35m[1mPOST /api/users/register HTTP/1.1[0m" 201 -
+2025-04-07 11:59:21,732 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:21] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:59:22,202 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:22] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:59:22,210 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:22] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:59:22,525 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:22] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:59:40,790 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:40] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:59:41,436 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:41] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 11:59:41,451 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:41] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 11:59:41,756 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 11:59:41] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:00:16,511 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:00:16] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 12:00:17,118 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:00:17] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 12:00:17,127 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:00:17] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:00:17,436 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:00:17] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:00:23,125 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:00:23] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:00:23,440 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:00:23] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:05:26,786 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:05:26] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 12:05:27,207 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:05:27] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 12:05:27,217 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:05:27] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:05:27,535 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:05:27] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:05:30,675 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:05:30] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:05:37,562 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:05:37] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:05:37,831 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:05:37] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:07:06,582 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:07:06] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 12:07:07,061 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:07:07] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-07 12:07:07,074 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:07:07] "OPTIONS /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:07:07,387 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:07:07] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-07 12:07:14,306 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:07:14] "OPTIONS /api/users/login HTTP/1.1" 200 -
+2025-04-07 12:07:14,843 - werkzeug - INFO - 127.0.0.1 - - [07/Apr/2025 12:07:14] "[31m[1mPOST /api/users/login HTTP/1.1[0m" 401 -

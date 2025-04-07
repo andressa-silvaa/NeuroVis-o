@@ -31,6 +31,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/uikit/dist/css/uikit.min.css",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/boosted/dist/css/boosted.min.css",
               "src/styles.css"
             ],
             "scripts": []

@@ -44,6 +44,7 @@ export class SignUpComponent {
             this.router.navigate(['/login']); 
           },
           error: (error) => {
+            this.isLoading = false; 
             this.handleApiError(error);
           },
           complete: () => {
