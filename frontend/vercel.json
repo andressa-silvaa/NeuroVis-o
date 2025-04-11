@@ -1,0 +1,17 @@
+{
+    "builds": [
+      {
+        "src": "frontend/dist/frontend/browser/**",
+        "use": "@vercel/static"
+      }
+    ],
+    "cleanUrls": true,
+    "redirects": [
+      {
+        "source": "/:match*",
+        "destination": "/index.html",
+        "permanent": false
+      }
+    ]
+  }
+  
