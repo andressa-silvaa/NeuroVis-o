@@ -26,22 +26,26 @@ def save_recognition_result(
     recognized_objects: list,
     processed_image_path: str,
     accuracy: float,
-    precision: float,
-    recall: float, 
-    inference_time: float
+    inference_time: float,
+    total_time: float,
+    confidence_avg: float,
+    objects_count: int,
+    detection_details: str  # Parâmetro detection_details permanece
 ) -> int:
     """
-    Salva os resultados da análise com todas as novas métricas
+    Salva os resultados da análise com todas as novas métricas.
     """
     try:
         new_result = ObjectRecognitionResult(
             ImageID=image_id,
-            RecognizedObjects=json.dumps(recognized_objects), 
+            RecognizedObjects=json.dumps(recognized_objects),
             ProcessedImagePath=processed_image_path,
             Accuracy=accuracy,
-            Precision=precision,
-            Recall=recall, 
             InferenceTimeMs=inference_time,
+            TotalTimeMs=total_time,  # Salvando total_time
+            ConfidenceAvg=confidence_avg,
+            ObjectsCount=objects_count,
+            DetectionDetails=detection_details,  # Salvando detection_details
             AnalyzedAt=datetime.utcnow()
         )
         db.session.add(new_result)

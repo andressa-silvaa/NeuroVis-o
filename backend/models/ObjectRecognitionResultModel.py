@@ -1,8 +1,6 @@
 from extensions import db
+from sqlalchemy.dialects.mssql import TEXT
 from datetime import datetime
-from sqlalchemy.dialects.mssql import TEXT, NVARCHAR
-from typing import Dict, List
-import json
 
 class ObjectRecognitionResult(db.Model):
     __tablename__ = 'ObjectRecognitionResults'
@@ -18,31 +16,14 @@ class ObjectRecognitionResult(db.Model):
     ProcessedImagePath = db.Column(db.String(255), nullable=False)
     AnalyzedAt = db.Column(db.DateTime, default=datetime.utcnow)
     
-    Accuracy = db.Column(db.Float, nullable=True)  
-    Precision = db.Column(db.Float, nullable=True)
-    Recall = db.Column(db.Float, nullable=True)
+    Accuracy = db.Column(db.Float, nullable=True)
     InferenceTimeMs = db.Column(db.Integer, nullable=True)
-    PreprocessTimeMs = db.Column(db.Integer, nullable=True)
-    PostprocessTimeMs = db.Column(db.Integer, nullable=True)
+    TotalTimeMs = db.Column(db.Integer, nullable=True)  
     ConfidenceAvg = db.Column(db.Float, nullable=True)
     ObjectsCount = db.Column(db.Integer, nullable=True)
-    DetectionDetails = db.Column(NVARCHAR(length=2**31-1), nullable=True)
+    DetectionDetails = db.Column(TEXT, nullable=True)
     
     image = db.relationship('Image', back_populates='recognition_results')
-    
-    def set_detection_details(self, results: List[Dict]):
-        """Helper para serializar os detalhes da detecção"""
-        self.DetectionDetails = json.dumps({
-            'objects': results,
-            'metadata': {
-                'processed_at': datetime.utcnow().isoformat(),
-                'model_version': 'yolov8'
-            }
-        })
-    
-    def get_detection_details(self) -> Dict:
-        """Helper para desserializar os detalhes"""
-        return json.loads(self.DetectionDetails) if self.DetectionDetails else None
 
     def __repr__(self):
         return f'<ObjectRecognitionResult {self.ResultID} - Image {self.ImageID}>'

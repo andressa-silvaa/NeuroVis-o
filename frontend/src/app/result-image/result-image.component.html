@@ -1,0 +1,78 @@
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <!-- Barra lateral (menu) -->
+    <div class="col-md-2 text-white d-flex flex-column justify-content-between barra-vertical">
+      <div class="menu w-100">
+        <div class="dashboard p-2">
+          <p><img src="assets/img/dashIcon.png" alt="Ícone" class="img-fluid"> Dashboard</p>
+        </div>
+        <div class="menu-item p-2 active">
+          <p><img src="assets/img/imageIcon.png" alt="Ícone"> Upload de Imagens</p>
+        </div>
+      </div>
+      <div class="logout d-flex justify-content-center p-2">
+        <a href="" class="text-white" style="text-decoration: underline;" [routerLink]="['/login']">Sair</a>
+      </div>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="col-md-10 d-flex flex-column align-items-center principal" style="background-color: #90B290; height: 100vh;">
+      <div class="header-container position-relative w-100">
+        <img *ngIf="originalImage" src="assets/img/voltarIcon.png" alt="Botão de voltar" class="voltar-icon" (click)="goBack()">
+        <h1 class="text-center w-100 mb-5 mt-3">Processamento de imagens</h1>
+      </div>     
+
+      <div class="d-flex flex-column flex-grow-1 w-100 justify-content-center align-items-center">
+        
+        <!-- GIF de Loading -->
+        <div *ngIf="isLoading" class="overlay-dark">
+            <div class="spinner-overlay">
+                <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!isLoading && originalImage" class="d-flex flex-column justify-content-center align-items-center upload" style="border: 2px solid #518D53;">
+          <img *ngIf="originalImage" [src]="originalImage" alt="Imagem carregada" class="img-preview">
+        </div>
+
+        <div *ngIf="!isLoading && originalImage" class="resultados mt-4 w-75 w-md-50">
+          <p class="fs-6 mb-2"><strong>Análise concluída com sucesso</strong> <i class="fas fa-check-circle" style="color: #518D53; float: right; font-size: 1.2em;"></i></p>
+          <hr style="border-color: #2A492B;">
+          <p class="fs-6 mb-2 mt-2">
+            <strong>Objetos encontrados: </strong>
+            <span *ngIf="this.analysisData?.objects && this.analysisData.objects.length > 0">
+              {{ getResultText() }}
+            </span>
+            <span *ngIf="!this.analysisData?.objects || this.analysisData.objects.length == 0">
+              Nenhum objeto encontrado
+            </span>
+          </p>
+
+          <!-- Tabela Responsiva -->
+          <div class="table-responsive">
+            <table class="table table-bordered text-white text-center">
+              <thead class="table-success text-dark">
+                <tr>
+                  <th>Acurácia</th>
+                  <th>Tempo de Inferência</th>
+                  <th>Tempo Total</th>
+                  <th>Quantidade de Objetos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ getFormattedAccuracy() }}</td>
+                  <td>{{ getFormattedTime(analysisData.metrics.inference_time) }}</td>
+                  <td>{{ getFormattedTime(analysisData.metrics.total_time) }}</td>
+                  <td>{{ analysisData.objects_count }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>               
+        </div>
+      </div>         
+    </div>
+  </div>
+</div>

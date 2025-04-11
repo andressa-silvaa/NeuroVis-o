@@ -27,64 +27,79 @@ class NeuralNetworkService:
             logger.error(f"Falha ao configurar Imgur: {str(e)}")
             raise
 
-    def _upload_to_imgur(self, image_path: str) -> str:
-        """Faz upload de uma imagem para o Imgur"""
+    def _upload_to_imgur(self, image_path: str, image_uuid: str) -> str:
+        """Faz upload de uma imagem para o Imgur e inclui o UUID na URL"""
         try:
             response = self.imgur_client.upload_from_path(image_path, anon=True)
-            return response['link']
+            image_url = f"{response['link']}?uuid={image_uuid}"
+
+            return image_url  
         except ImgurClientError as e:
             error_msg = "Limite do Imgur atingido" if 'rate limit' in str(e) else f"Erro no Imgur: {str(e)}"
             logger.error(error_msg)
             raise Exception(error_msg)
 
-    def analyze_image(self, image_path: str, user_id: int) -> Dict:
+
+    def analyze_image(self, image_path: str, user_id: int, image_uuid: str = None) -> Dict:
         """
         Processa imagem completa: detecção, upload e salvamento.
         """
         try:
-            detection_img, detected_objects, metrics = get_detection_results(image_path)
-            
+            image_uuid = image_uuid or str(uuid.uuid4())
+
+            detection_img, detected_objects, raw_metrics = get_detection_results(image_path)
+
             accuracy = sum(obj['confidence'] for obj in detected_objects) / max(1, len(detected_objects))
-            recall = metrics.get('recall', 0) 
-            
-            filename = f"processed_{uuid.uuid4()}.jpg"
+
+            filename = f"processed_{image_uuid}.jpg"
             temp_path = os.path.join(Config.UPLOAD_FOLDER, filename)
-            
-            cv2.imwrite(temp_path, detection_img)  
-            
+
+            cv2.imwrite(temp_path, detection_img)
+
             try:
-                image_url = self._upload_to_imgur(temp_path)
+                image_url = self._upload_to_imgur(temp_path, image_uuid)
                 logger.info(f"Imagem enviada: {image_url}")
-                
+
                 image_id = save_image(user_id, image_url)
+                
                 save_recognition_result(
                     image_id=image_id,
                     recognized_objects=detected_objects,
                     processed_image_path=image_url,
                     accuracy=accuracy,
-                    precision=metrics['precision'],
-                    recall=recall,  
-                    inference_time=metrics['inference_time']
+                    inference_time=raw_metrics.get('inference_time'),
+                    total_time=raw_metrics.get('total_time'),  
+                    confidence_avg=accuracy,
+                    objects_count=len(detected_objects),
+                    detection_details=detected_objects
                 )
-                
+
+                metrics = {
+                    'accuracy': round(accuracy, 4),
+                    'inference_time': raw_metrics.get('inference_time'),
+                    'total_time': raw_metrics.get('total_time') 
+                }
+
                 return {
                     'image_id': image_id,
                     'image_url': image_url,
                     'objects': [obj['class_name'] for obj in detected_objects],
                     'accuracy': round(accuracy, 4),
-                    'metrics': metrics
+                    'metrics': metrics,
+                    'objects_count': len(detected_objects) 
                 }
             finally:
                 if os.path.exists(temp_path):
                     os.remove(temp_path)
-                    
+
         except Exception as e:
             logger.error(f"Falha na análise: {str(e)}")
             raise
 
 
+# Instância global
 neural_service = NeuralNetworkService()
 
-def analyze_image(image_path: str, user_id: int) -> Dict:
+def analyze_image(image_path: str, user_id: int, image_uuid: str = None) -> Dict:
     """Interface pública para análise de imagens"""
-    return neural_service.analyze_image(image_path, user_id)
+    return neural_service.analyze_image(image_path, user_id, image_uuid)

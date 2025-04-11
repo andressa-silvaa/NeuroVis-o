@@ -26,7 +26,8 @@ class YOLOv8Detector:
 
     def detect(self, image_path: Union[str, np.ndarray]) -> Tuple[np.ndarray, List[Dict], Dict]:
         """
-        Detecta objetos em uma única imagem e retorna múltiplos resultados.
+        Detecta objetos em uma imagem e retorna a imagem com deteções,
+        os objetos detectados e as métricas de tempo.
         """
         if not self.model:
             raise ValueError("Modelo não carregado. Chame load_model() primeiro.")
@@ -34,7 +35,7 @@ class YOLOv8Detector:
         results = self.model(image_path)
         detection_img = results[0].plot()
         detected_objects = []
-        
+
         for box in results[0].boxes:
             detected_objects.append({
                 'class_id': int(box.cls),
@@ -42,15 +43,12 @@ class YOLOv8Detector:
                 'confidence': float(box.conf),
                 'bbox': box.xyxy[0].tolist()
             })
-        
+
         metrics = {
-            'accuracy': results[0].speed['preprocess'],
-            'precision': results[0].speed['inference'],
-            'recall': results[0].speed['postprocess'],
-            'inference_time': results[0].speed['inference'],
-            'total_time': sum(results[0].speed.values())
+            'inference_time': results[0].speed.get('inference'),
+            'total_time': sum(results[0].speed.values())  
         }
-        
+
         return detection_img, detected_objects, metrics
 
     def batch_detect(self, images_dir: str, output_dir: str = None) -> List[Dict]:
@@ -72,9 +70,10 @@ class YOLOv8Detector:
                 results.append({'path': img_path, 'objects': objects, 'metrics': metrics})
             except Exception as e:
                 logger.error(f"Erro ao processar {img_path}: {str(e)}")
-        
+
         return results
 
+# Instancia global e carregamento do modelo
 detector = YOLOv8Detector()
 detector.load_model()
 

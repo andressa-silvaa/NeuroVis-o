@@ -19,12 +19,14 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "boosted": "^5.3.3",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.5",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "uikit": "^3.21.13",
+    "uuid": "^11.1.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

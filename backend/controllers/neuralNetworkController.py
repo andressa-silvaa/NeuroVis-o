@@ -19,8 +19,9 @@ def analyze():
     try:
         current_user_id = get_jwt_identity()
         file = request.files['image'] 
+        image_uuid = request.form['uuid']  
         
-        filename = secure_filename(f"{uuid.uuid4()}_{file.filename}")
+        filename = secure_filename(f"{image_uuid}_{file.filename}")
         temp_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(temp_path)
 
@@ -34,7 +35,8 @@ def analyze():
                     "image_url": result['image_url'],
                     "objects": result['objects'],
                     "accuracy": result['accuracy'],
-                    "metrics": result['metrics']
+                    "metrics": result['metrics'],
+                    "objects_count": result['objects_count']
                 }
             }), 200
         finally:

@@ -1,0 +1,228 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.container-fluid {
+    height: 100vh;
+}
+
+.barra-vertical {
+    background-color: #2A492B;
+}
+
+.dashboard p, .logout a, .principal h1 {
+    font-weight: 600;
+}
+
+.dashboard p img {
+    height: 30px;
+    margin-top: -4px;
+}
+
+.menu-item {
+    cursor: pointer;
+    background-color: #518D53;
+    width: 100%;
+}
+
+.menu-item p img {
+    height: 18px;
+    margin-top: -4px;
+}
+
+.menu-item p {
+    margin-left: 20px;
+    font-size: 0.8em;
+}
+
+.principal h1 {
+    color: #2A492B;
+}
+
+.principal .upload {
+    margin: -50px 0px 0px 0px;
+    width: 50%;
+    height: 60%;
+    cursor: pointer;
+    max-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.upload img {
+    margin-top: 50px;
+    height: 130px;
+}
+
+.upload p {
+    color: #518D53;
+    font-size: 2em;
+}
+
+.principal .upload {
+    margin: -50px 0px 0px 0px;
+    width: 50%;
+    height: 60%;
+    max-height: 500px;
+    border: 2px solid #518D53;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.img-preview {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.header-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.voltar-icon {
+    position: absolute;
+    left: 0;
+    max-height: 95%;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    border-right: 1px solid #e0e0e0;
+}
+
+.table th:last-child, .table td:last-child {
+    border-right: none;
+}
+
+.table th {
+    background-color: rgba(128, 128, 128, 0.358);
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.table td {
+    background-color: #f9f9f9;
+    color: #555;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table tbody tr:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+hr {
+    border-color: #2A492B;
+    border-width: 1px;
+    margin: 20px 0;
+    opacity: 0.5;
+}
+
+.table-success th, .table-success td {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .principal h1, .upload p {
+        font-size: 1.8em;
+        margin-bottom: 100px!important;
+        text-align: center;
+    }
+
+    .button-container button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .header-container {
+        align-items: center;
+        padding-top: 50px;
+    }
+
+    .voltar-icon {
+        position: relative;
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
+
+    .principal h1 {
+        font-size: 1.8em;
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .principal .upload {
+        width: 90%;
+        height: 50vh;
+    }
+}
+
+@media (max-width: 500px) {
+    .principal h1, .upload p {
+        font-size: 1.8em;
+        text-align: center;
+    }
+
+    .principal h1 {
+        margin-top: 50px;
+    }
+
+    .voltar-icon {
+        height: 50px;
+        margin-left: 10px;
+        margin-top: -20px;
+    }
+
+    .principal .upload {
+        height: 40vh;
+    }
+}
