@@ -13,7 +13,7 @@ class Config:
     IMGUR_CLIENT_ID = 'f74f3693feeb900'  
     IMGUR_CLIENT_SECRET = '4f9584bae90e4087a2857da6cb28f0412cc0b403'  
     IMGUR_ACCESS_TOKEN = 'seu_access_token'
-    YOLO_WEIGHTS_PATH = 'C:/repo/NeuroVis-o/treino-rede-neural-yolov8/train34/weights/best.pt'
+    YOLO_WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'treino-rede-neural-yolov8', 'train34', 'weights', 'best.pt')
     UPLOAD_FOLDER = 'uploads/images' 
 
     if not os.path.exists(UPLOAD_FOLDER):
