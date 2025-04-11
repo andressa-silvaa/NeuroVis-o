@@ -1,10 +1,12 @@
+import os
 from flask import Flask, jsonify
-from config.config import Config
+from config.config import Config, ProductionConfig
 from extensions import db
 from flask_jwt_extended import JWTManager
 import logging
 from datetime import datetime
 from flask_cors import CORS
+from sqlalchemy import text
 
 def configure_logging():
     """Configuração centralizada de logging"""
@@ -18,27 +20,42 @@ def configure_logging():
     )
     return logging.getLogger(__name__)
 
-def create_app():
+def create_app(config_class=ProductionConfig):
     """Factory principal da aplicação Flask"""
     app = Flask(__name__)
-    app.config.from_object(Config)
-    CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+    
+    # Carrega configurações
+    app.config.from_object(config_class)
+    config_class.init_app(app)  # Inicializa configurações adicionais
+    
+    # Configura CORS
+    CORS(app, supports_credentials=True, resources={
+        r"/api/*": {
+            "origins": os.environ.get('ALLOWED_ORIGINS', 'http://localhost:4200').split(',')
+        }
+    })
     
     logger = configure_logging()
+    logger.info(f"Iniciando aplicação no ambiente: {config_class.__name__}")
     
     try:
+        # Inicializa extensões
         db.init_app(app)
         jwt = JWTManager(app)
         logger.info("Extensões inicializadas com sucesso")
     except Exception as e:
-        logger.critical(f"Falha na inicialização de extensões: {str(e)}")
+        logger.critical(f"Falha na inicialização de extensões: {str(e)}", exc_info=True)
         raise
 
     configure_jwt_handlers(jwt, logger)
 
     with app.app_context():
-        register_blueprints(app, logger)
-        initialize_database(app, db, logger)
+        try:
+            register_blueprints(app, logger)
+            initialize_database(app, db, logger)
+        except Exception as e:
+            logger.critical(f"Falha na inicialização da aplicação: {str(e)}", exc_info=True)
+            raise
 
     register_utility_endpoints(app, db, logger)
 
@@ -83,24 +100,32 @@ def register_blueprints(app, logger):
         from controllers.userController import user_bp
         from controllers.neuralNetworkController import neural_bp
         
-        app.register_blueprint(user_bp)
-        app.register_blueprint(neural_bp)
+        app.register_blueprint(user_bp, url_prefix='/api/users')
+        app.register_blueprint(neural_bp, url_prefix='/api/neural')
         logger.info("Blueprints registrados com sucesso")
+    except ImportError as e:
+        logger.error(f"Falha ao importar blueprints: {str(e)}", exc_info=True)
+        raise
     except Exception as e:
-        logger.error(f"Falha ao registrar blueprints: {str(e)}")
+        logger.error(f"Falha ao registrar blueprints: {str(e)}", exc_info=True)
         raise
 
 def initialize_database(app, db, logger):
     """Inicializa e verifica o banco de dados"""
     try:
+        # Importa modelos para garantir que as tabelas sejam criadas
         from models.userModel import User
         from models.imageModel import Image
         from models.ObjectRecognitionResultModel import ObjectRecognitionResult
         
         db.create_all()
         logger.info("Tabelas do banco de dados verificadas/criadas")
+        
+        # Testa a conexão com a sintaxe correta
+        db.session.execute(text("SELECT 1"))
+        logger.info("Conexão com o banco de dados estabelecida com sucesso")
     except Exception as e:
-        logger.critical(f"Falha na inicialização do banco de dados: {str(e)}")
+        logger.critical(f"Falha na inicialização do banco de dados: {str(e)}", exc_info=True)
         raise
 
 def register_utility_endpoints(app, db, logger):
@@ -114,7 +139,8 @@ def register_utility_endpoints(app, db, logger):
             "services": {
                 "database": test_database_connection(db),
                 "authentication": "active"
-            }
+            },
+            "environment": app.config.get("ENV", "production")
         }
         logger.debug("Health check realizado")
         return jsonify(status)
@@ -125,23 +151,25 @@ def register_utility_endpoints(app, db, logger):
         return jsonify({
             "name": "NeuroVision API",
             "version": "1.0.0",
-            "environment": Config.ENVIRONMENT
+            "environment": app.config.get("ENV", "production")
         })
 
 def test_database_connection(db):
     """Testa a conexão com o banco de dados"""
     try:
-        db.session.execute("SELECT 1")
+        db.session.execute(text("SELECT 1"))
         return "connected"
-    except Exception:
-        return "disconnected"
+    except Exception as e:
+        return f"disconnected: {str(e)}"
 
+# Cria a aplicação usando a configuração apropriada
 app = create_app()
 
 if __name__ == "__main__":
+    # Configuração específica para desenvolvimento local
     app.run(
-        host=Config.APP_HOST,
-        port=Config.APP_PORT,
-        debug=Config.DEBUG_MODE,
+        host=os.environ.get('APP_HOST', '0.0.0.0'),
+        port=int(os.environ.get('PORT', 5000)),
+        debug=os.environ.get('DEBUG_MODE', 'False').lower() == 'true',
         threaded=True
     )

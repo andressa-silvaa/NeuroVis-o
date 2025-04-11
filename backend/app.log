@@ -287,3 +287,129 @@
 2025-04-11 13:56:50,330 - services.neuralNetworkService - INFO - Imagem enviada: https://i.imgur.com/y7CaPwo.jpeg?uuid=92cd37a2-dd29-45ab-b6fc-93ade67238ff
 2025-04-11 13:56:50,392 - werkzeug - INFO - 127.0.0.1 - - [11/Apr/2025 13:56:50] "POST /api/neural/analyze HTTP/1.1" 200 -
 2025-04-11 13:56:50,404 - werkzeug - INFO - 127.0.0.1 - - [11/Apr/2025 13:56:50] "GET /api/users/auth/check HTTP/1.1" 200 -
+2025-04-11 17:18:08,492 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-11 17:18:11,830 - services.detectObjectService - INFO - Carregando modelo de c:\repo\NeuroVis-o\backend\config\..\..\treino-rede-neural-yolov8\train34\weights\best.pt
+2025-04-11 17:18:12,384 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-11 17:18:12,388 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-11 17:18:12,943 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-11 17:18:12,960 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.15:5000
+2025-04-11 17:18:12,960 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-11 17:18:12,961 - werkzeug - INFO -  * Restarting with stat
+2025-04-11 17:18:13,411 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-11 17:18:15,410 - services.detectObjectService - INFO - Carregando modelo de c:\repo\NeuroVis-o\backend\config\..\..\treino-rede-neural-yolov8\train34\weights\best.pt
+2025-04-11 17:18:15,765 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-11 17:18:15,767 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-11 17:18:16,110 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-11 17:18:16,115 - werkzeug - WARNING -  * Debugger is active!
+2025-04-11 17:18:16,117 - werkzeug - INFO -  * Debugger PIN: 829-723-703
+2025-04-11 17:18:16,257 - werkzeug - INFO - 127.0.0.1 - - [11/Apr/2025 17:18:16] "POST /api/users/login HTTP/1.1" 200 -
+2025-04-11 17:18:31,079 - services.neuralNetworkService - INFO - Imagem enviada: https://i.imgur.com/YrXvTW7.jpeg?uuid=495bddec-03d0-4c73-b3e6-90ba761ea3a9
+2025-04-11 17:18:31,154 - werkzeug - INFO - 127.0.0.1 - - [11/Apr/2025 17:18:31] "POST /api/neural/analyze HTTP/1.1" 200 -
+2025-04-11 17:37:57,649 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\config\\config.py', reloading
+2025-04-11 17:37:58,160 - werkzeug - INFO -  * Restarting with stat
+2025-04-11 17:37:58,612 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-11 17:38:00,716 - services.detectObjectService - INFO - Carregando modelo de c:\repo\NeuroVis-o\backend\config\..\..\treino-rede-neural-yolov8\train34\weights\best.pt
+2025-04-11 17:38:01,162 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-11 17:38:01,169 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-11 17:38:01,692 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-11 17:38:01,703 - werkzeug - WARNING -  * Debugger is active!
+2025-04-11 17:38:01,706 - werkzeug - INFO -  * Debugger PIN: 829-723-703
+2025-04-11 17:39:45,410 - werkzeug - INFO -  * Detected change in 'c:\\repo\\NeuroVis-o\\backend\\config\\config.py', reloading
+2025-04-11 17:39:46,661 - werkzeug - INFO -  * Restarting with stat
+2025-04-11 17:39:47,103 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-11 17:39:49,264 - services.detectObjectService - ERROR - Arquivo de pesos não encontrado: C:\repo\NeuroVis-o\backend\treino-rede-neural-yolov8\train34\weights\best.pt
+2025-04-11 17:39:49,265 - __main__ - ERROR - Falha ao registrar blueprints: Arquivo de pesos não encontrado: C:\repo\NeuroVis-o\backend\treino-rede-neural-yolov8\train34\weights\best.pt
+2025-04-11 17:44:21,331 - __main__ - INFO - Iniciando aplicação no ambiente: ProductionConfig
+2025-04-11 17:44:21,345 - __main__ - INFO - Extensões inicializadas com sucesso
+2025-04-11 17:44:23,284 - services.detectObjectService - INFO - Carregando modelo de C:\repo\NeuroVis-o\backend\model_weights\best.pt
+2025-04-11 17:44:23,512 - services.neuralNetworkService - INFO - Serviço neural configurado
+2025-04-11 17:44:23,515 - __main__ - INFO - Blueprints registrados com sucesso
+2025-04-11 17:44:23,919 - __main__ - INFO - Tabelas do banco de dados verificadas/criadas
+2025-04-11 17:44:23,920 - __main__ - CRITICAL - Falha na inicialização do banco de dados: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+Traceback (most recent call last):
+  File "c:\repo\NeuroVis-o\backend\app.py", line 122, in initialize_database
+    db.session.execute("SELECT 1")
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\orm\scoping.py", line 779, in execute
+    return self._proxied.execute(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2149, in _execute_internal
+    statement = coercions.expect(roles.StatementRole, statement)
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 395, in expect
+    resolved = impl._literal_coercion(
+        element, argname=argname, **kw
+    )
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 621, in _literal_coercion
+    return self._text_coercion(element, argname, **kw)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 614, in _text_coercion
+    return _no_text_coercion(element, argname)
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 584, in _no_text_coercion
+    raise exc_cls(
+    ...<7 lines>...
+    ) from err
+sqlalchemy.exc.ArgumentError: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-04-11 17:44:23,981 - __main__ - CRITICAL - Falha na inicialização da aplicação: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+Traceback (most recent call last):
+  File "c:\repo\NeuroVis-o\backend\app.py", line 55, in create_app
+    initialize_database(app, db, logger)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "c:\repo\NeuroVis-o\backend\app.py", line 122, in initialize_database
+    db.session.execute("SELECT 1")
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\orm\scoping.py", line 779, in execute
+    return self._proxied.execute(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2149, in _execute_internal
+    statement = coercions.expect(roles.StatementRole, statement)
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 395, in expect
+    resolved = impl._literal_coercion(
+        element, argname=argname, **kw
+    )
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 621, in _literal_coercion
+    return self._text_coercion(element, argname, **kw)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 614, in _text_coercion
+    return _no_text_coercion(element, argname)
+  File "C:\repo\NeuroVis-o\backend\venv\Lib\site-packages\sqlalchemy\sql\coercions.py", line 584, in _no_text_coercion
+    raise exc_cls(
+    ...<7 lines>...
+    ) from err
+sqlalchemy.exc.ArgumentError: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
