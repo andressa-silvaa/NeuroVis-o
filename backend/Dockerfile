@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     unixodbc \
     unixodbc-dev \
     libgl1 \
+    libglib2.0-0 \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
