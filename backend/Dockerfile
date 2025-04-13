@@ -1,4 +1,4 @@
-# Use uma imagem base compatível com o driver ODBC
+# Usa imagem base leve com Python
 FROM python:3.10-slim
 
 # Instala dependências do sistema
@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     unixodbc \
     unixodbc-dev \
+    libgl1 \                  # <- Adicionada aqui
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
@@ -19,15 +20,15 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
 # Define o diretório de trabalho
 WORKDIR /app
 
-# Copia o projeto
+# Copia os arquivos do projeto
 COPY . .
 
-# Instala as dependências do Python
+# Instala dependências Python
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Expõe a porta do Render
+# Expõe a porta padrão do Render
 EXPOSE 10000
 
-
+# Comando para iniciar a aplicação com Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "4", "app:app"]
