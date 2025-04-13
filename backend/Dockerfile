@@ -32,4 +32,4 @@ RUN pip install -r requirements.txt
 EXPOSE 10000
 
 # Comando para iniciar a aplicação com Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "4", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "120", "app:app"]
