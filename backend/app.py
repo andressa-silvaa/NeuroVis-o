@@ -166,10 +166,11 @@ def test_database_connection(db):
 app = create_app()
 
 if __name__ == "__main__":
-    # Configuração específica para desenvolvimento local
+    # Configuração para produção no Render
+    port = int(os.environ.get("PORT", 10000))  # Render usa porta 10000 por padrão
     app.run(
-        host=os.environ.get('APP_HOST', '0.0.0.0'),
-        port=int(os.environ.get('PORT', 5000)),
+        host='0.0.0.0',  # Importante para aceitar conexões externas
+        port=port,
         debug=os.environ.get('DEBUG_MODE', 'False').lower() == 'true',
         threaded=True
     )
