@@ -1,17 +1,24 @@
 #!/bin/bash
-# Atualiza pacotes e instala dependências do sistema
+# Atualiza e instala dependências do sistema
 sudo apt-get update
 sudo apt-get install -y unixodbc unixodbc-dev gnupg2 curl
 
-# Instala o driver ODBC da Microsoft para SQL Server
-curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+# Adiciona repositório da Microsoft e instala o driver ODBC
+curl https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/20.04/prod focal main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
 sudo apt-get update
-sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
+sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
+
+# Configura variáveis de ambiente para o driver
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+source ~/.bashrc
 
 # Instala dependências do Python
 pip install --upgrade pip
 pip install -r requirements.txt gunicorn
 
-# Inicia a aplicação com Gunicorn (recomendado para produção)
-gunicorn --bind 0.0.0.0:$PORT --workers 4 --threads 2 --timeout 120 app:app
+# Verifica a instalação do driver
+odbcinst -q -d -n "ODBC Driver 17 for SQL Server"
+
+# Inicia a aplicação
+gunicorn --bind 0.0.0.0:$PORT --workers 4 app:app
