@@ -1,7 +1,7 @@
 #!/bin/bash
 # Atualiza e instala dependências do sistema
 sudo apt-get update
-sudo apt-get install -y unixodbc unixodbc-dev unixodbc-bin gnupg2 curl
+sudo apt-get install -y unixodbc unixodbc-dev gnupg2 curl
 
 # Adiciona repositório da Microsoft e instala o driver ODBC
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
@@ -14,9 +14,11 @@ echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
 
 # Instala dependências do Python
-python -m pip install --upgrade pip
-python -m pip install gunicorn
-python -m pip install -r requirements.txt
+pip install --upgrade pip
+pip install -r requirements.txt gunicorn
+
+# Verifica a instalação do driver
+odbcinst -q -d -n "ODBC Driver 17 for SQL Server"
 
 # Inicia a aplicação
 gunicorn --bind 0.0.0.0:$PORT --workers 4 app:app
