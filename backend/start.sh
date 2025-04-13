@@ -1,24 +1,21 @@
 #!/bin/bash
-# Script otimizado para o Render
+# Script otimizado para instalação no Render
 
-# Instala dependências do sistema
+# Instala dependências essenciais
 sudo apt-get update
 sudo apt-get install -y unixodbc unixodbc-dev gcc g++
 
-# Baixa e instala o pacote MS ODBC Driver diretamente (sem usar repositório)
-curl -O https://packages.microsoft.com/keys/microsoft.asc
-sudo apt-key add microsoft.asc
-curl -O https://packages.microsoft.com/config/ubuntu/20.04/prod.list
-sudo mv prod.list /etc/apt/sources.list.d/mssql-release.list
+# Instala o driver ODBC da Microsoft (versão simplificada para Render)
+curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
 sudo apt-get update
 sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
 
-# Configura variáveis de ambiente
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/mssql-tools/lib"' >> ~/.bash_profile
-source ~/.bash_profile
+# Configura variáveis de ambiente essenciais
+export PATH="$PATH:/opt/mssql-tools/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/mssql-tools/lib"
 
-# Verifica a instalação
+# Verifica a instalação do driver
 odbcinst -q -d -n "ODBC Driver 17 for SQL Server"
 
 # Instala dependências do Python
