@@ -4,7 +4,6 @@ from datetime import datetime
 
 class User(db.Model):
     __tablename__ = 'Users'
-    __table_args__ = {'schema': 'dbo'}
     
     UserID = db.Column(db.Integer, primary_key=True)
     Email = db.Column(db.String(255), nullable=False, unique=True)

@@ -8,7 +8,7 @@ from sqlalchemy import text
 
 class Config:
     # Configurações de Banco de Dados (SQL Server)
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace('mssql://', 'mssql+pyodbc://') + '?driver=ODBC+Driver+17+for+SQL+Server&TrustServerCertificate=yes'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace('mysql://', 'mysql+pymysql://')
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,
         'pool_recycle': 3600

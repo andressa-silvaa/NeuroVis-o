@@ -1,18 +1,18 @@
 from extensions import db
-from sqlalchemy.dialects.mssql import TEXT
 from datetime import datetime
 
 class ObjectRecognitionResult(db.Model):
     __tablename__ = 'ObjectRecognitionResults'
-    __table_args__ = {'schema': 'dbo', 'extend_existing': True}
+    # Remova o esquema, pois no MySQL isso não é utilizado da mesma forma
+    __table_args__ = {'extend_existing': True}
     
     ResultID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     ImageID = db.Column(
         db.Integer, 
-        db.ForeignKey('dbo.Images.ImageID', ondelete='CASCADE'), 
+        db.ForeignKey('Images.ImageID', ondelete='CASCADE'),  # Remova 'dbo.' se não usar esquema
         nullable=False
     )
-    RecognizedObjects = db.Column(TEXT, nullable=False)
+    RecognizedObjects = db.Column(db.String(255), nullable=False)  # Usando String no lugar de TEXT
     ProcessedImagePath = db.Column(db.String(255), nullable=False)
     AnalyzedAt = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -21,7 +21,7 @@ class ObjectRecognitionResult(db.Model):
     TotalTimeMs = db.Column(db.Integer, nullable=True)  
     ConfidenceAvg = db.Column(db.Float, nullable=True)
     ObjectsCount = db.Column(db.Integer, nullable=True)
-    DetectionDetails = db.Column(TEXT, nullable=True)
+    DetectionDetails = db.Column(db.String(255), nullable=True)  # Usando String no lugar de TEXT
     
     image = db.relationship('Image', back_populates='recognition_results')
 
