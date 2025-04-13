@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     unixodbc \
     unixodbc-dev \
-    libgl1 \                  # <- Adicionada aqui
+    libgl1 \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
