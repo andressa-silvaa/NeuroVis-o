@@ -31,7 +31,7 @@ def create_app(config_class=ProductionConfig):
     # Configura CORS
     CORS(app, supports_credentials=True, resources={
         r"/api/*": {
-            "origins": os.environ.get('ALLOWED_ORIGINS', 'http://localhost:4200').split(',')
+            "origins": os.environ.get('ALLOWED_ORIGINS', 'http://localhost:4200,https://neuro-vis-o.vercel.app,https://neurovis-o.onrender.com').split(',')
         }
     })
     
