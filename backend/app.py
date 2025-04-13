@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from config.config import Config, ProductionConfig
 from extensions import db
 from flask_jwt_extended import JWTManager
@@ -37,6 +37,7 @@ def create_app(config_class=ProductionConfig):
     
     logger = configure_logging()
     logger.info(f"Iniciando aplicação no ambiente: {config_class.__name__}")
+    logger.info(f"Configuração de banco de dados: {app.config['SQLALCHEMY_DATABASE_URI'].split('?')[0]}")
     
     try:
         # Inicializa extensões
@@ -58,6 +59,21 @@ def create_app(config_class=ProductionConfig):
             raise
 
     register_utility_endpoints(app, db, logger)
+    register_diagnostic_endpoints(app, logger)  # Novo endpoint de diagnóstico
+
+    @app.before_first_request
+    def verify_db_connection():
+        try:
+            db.session.execute(text("SELECT 1"))
+            logger.info("Conexão com o banco de dados estabelecida com sucesso no primeiro request")
+        except Exception as e:
+            logger.critical(f"Falha na conexão com o banco de dados no primeiro request: {str(e)}")
+            # Log da URI sem expor credenciais
+            safe_uri = app.config['SQLALCHEMY_DATABASE_URI'].split('@')
+            if len(safe_uri) > 1:
+                logger.critical(f"URI do banco (parte do host): {safe_uri[1].split('?')[0]}")
+            else:
+                logger.critical("URI do banco não disponível em formato padrão")
 
     return app
 
@@ -118,12 +134,28 @@ def initialize_database(app, db, logger):
         from models.imageModel import Image
         from models.ObjectRecognitionResultModel import ObjectRecognitionResult
         
-        db.create_all()
-        logger.info("Tabelas do banco de dados verificadas/criadas")
+        # Testa a conexão antes de criar tabelas
+        try:
+            db.session.execute(text("SELECT 1"))
+            logger.info("Conexão com o banco de dados testada com sucesso")
+            
+            # Só cria tabelas se a conexão estiver OK
+            db.create_all()
+            logger.info("Tabelas do banco de dados verificadas/criadas")
+        except Exception as db_error:
+            logger.critical(f"Teste de conexão com o banco de dados falhou: {str(db_error)}", exc_info=True)
+            # Verifica configuração do ODBC
+            try:
+                import subprocess
+                odbc_info = subprocess.check_output(['odbcinst', '-j']).decode()
+                logger.info(f"Informações do ODBC: {odbc_info}")
+                
+                drivers = subprocess.check_output(['odbcinst', '-q', '-d']).decode()
+                logger.info(f"Drivers ODBC disponíveis: {drivers}")
+            except Exception as odbc_error:
+                logger.error(f"Não foi possível obter informações do ODBC: {str(odbc_error)}")
+            raise db_error
         
-        # Testa a conexão com a sintaxe correta
-        db.session.execute(text("SELECT 1"))
-        logger.info("Conexão com o banco de dados estabelecida com sucesso")
     except Exception as e:
         logger.critical(f"Falha na inicialização do banco de dados: {str(e)}", exc_info=True)
         raise
@@ -153,6 +185,71 @@ def register_utility_endpoints(app, db, logger):
             "version": "1.0.0",
             "environment": app.config.get("ENV", "production")
         })
+
+def register_diagnostic_endpoints(app, logger):
+    """Registra endpoints de diagnóstico"""
+    @app.route('/diagnostic')
+    def diagnostic():
+        """Endpoint para diagnóstico do ambiente e configurações"""
+        import os
+        import subprocess
+        import sys
+        
+        try:
+            # Informações do sistema
+            system_info = {
+                "python_version": sys.version,
+                "platform": sys.platform,
+                "cwd": os.getcwd(),
+                "env_vars": {
+                    "PATH": os.environ.get("PATH", "Não definido"),
+                    "LD_LIBRARY_PATH": os.environ.get("LD_LIBRARY_PATH", "Não definido"),
+                    "PYTHONPATH": os.environ.get("PYTHONPATH", "Não definido")
+                }
+            }
+            
+            # Verificar drivers ODBC instalados
+            odbc_info = {}
+            try:
+                odbc_info["config"] = subprocess.check_output(['odbcinst', '-j']).decode()
+            except Exception as e:
+                odbc_info["config_error"] = str(e)
+                
+            try:
+                odbc_info["drivers"] = subprocess.check_output(['odbcinst', '-q', '-d']).decode()
+            except Exception as e:
+                odbc_info["drivers_error"] = str(e)
+                
+            # Verificar diretórios chave
+            dir_check = {}
+            paths_to_check = [
+                "/usr/lib/x86_64-linux-gnu/odbc",
+                "/usr/local/lib/odbc",
+                "/opt/microsoft/msodbcsql17"
+            ]
+            
+            for path in paths_to_check:
+                try:
+                    if os.path.exists(path):
+                        dir_check[path] = os.listdir(path)
+                    else:
+                        dir_check[path] = "Diretório não existe"
+                except Exception as e:
+                    dir_check[path] = f"Erro ao verificar: {str(e)}"
+            
+            return jsonify({
+                "system": system_info,
+                "odbc": odbc_info,
+                "directories": dir_check,
+                "database_config": {
+                    "database_type": "SQL Server",
+                    "connection_string_type": "ODBC via pyodbc",
+                    "server": os.environ.get("DATABASE_URL", "").split("@")[1].split("/")[0] if "@" in os.environ.get("DATABASE_URL", "") else "Não disponível"
+                }
+            })
+        except Exception as e:
+            logger.error(f"Erro no endpoint de diagnóstico: {str(e)}", exc_info=True)
+            return jsonify({"error": str(e)}), 500
 
 def test_database_connection(db):
     """Testa a conexão com o banco de dados"""
