@@ -1,0 +1,44 @@
+FROM python:3.10-slim
+
+# Instale dependências
+RUN apt-get update && apt-get install -y \
+    gnupg2 \
+    unixodbc-dev \
+    curl \
+    apt-transport-https \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Adicione o repositório Microsoft e instale o driver ODBC
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure variáveis de ambiente
+ENV PATH="$PATH:/opt/mssql-tools/bin"
+ENV LD_LIBRARY_PATH="/opt/microsoft/msodbcsql17/lib64:$LD_LIBRARY_PATH"
+
+# Crie e mude para o diretório da aplicação
+WORKDIR /app
+
+# Copie os arquivos de requisitos primeiro para aproveitar o cache do Docker
+COPY requirements.txt .
+
+# Instale dependências Python
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
+
+# Copie o restante dos arquivos
+COPY . .
+
+# Crie diretórios necessários
+RUN mkdir -p uploads/images model_weights
+
+# Exponha a porta (o Render irá substituir isso pela variável PORT)
+EXPOSE 10000
+
+# Comando para iniciar a aplicação
+CMD gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 2 --timeout 180 app:app

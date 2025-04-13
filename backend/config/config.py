@@ -6,12 +6,24 @@ from urllib.request import urlretrieve
 from sqlalchemy import text
 
 class Config:
-    # Configurações de Banco de Dados (SQL Server)
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace('mssql://', 'mssql+pyodbc://') + '?driver=ODBC+Driver+17+for+SQL+Server&TrustServerCertificate=yes'
+    # Configurações de Banco de Dados
+    # Tratamento da string de conexão para compatibilidade com Docker no Render
+    raw_db_url = os.environ.get('DATABASE_URL', 'mssql://andressa_sql_user:AndressaSilva123@servidor-remoto/neurovision_db')
+    
+    # Verifica se estamos usando MS SQL Server
+    if raw_db_url.startswith('mssql://'):
+        # Modifica a string para usar o driver pyodbc com as configurações corretas
+        SQLALCHEMY_DATABASE_URI = raw_db_url.replace('mssql://', 'mssql+pyodbc://') + '?driver=ODBC+Driver+17+for+SQL+Server&TrustServerCertificate=yes'
+    else:
+        # Mantém a string como está para outros tipos de banco de dados
+        SQLALCHEMY_DATABASE_URI = raw_db_url
+    
+    # Opções do SQLAlchemy para melhor performance
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,
         'pool_recycle': 3600
     }
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Configurações JWT (Security)
@@ -21,14 +33,13 @@ class Config:
 
     # Configurações do Servidor
     APP_HOST = os.environ.get('APP_HOST', '0.0.0.0')
-    APP_PORT = int(os.environ.get('PORT', 5000))
+    APP_PORT = int(os.environ.get('PORT', 10000))
     DEBUG_MODE = os.environ.get('DEBUG_MODE', 'False').lower() == 'true'
     ENVIRONMENT = os.environ.get('ENVIRONMENT', 'production')
 
     # Configurações do Imgur
     IMGUR_CLIENT_ID = os.environ.get('IMGUR_CLIENT_ID', 'f74f3693feeb900')
     IMGUR_CLIENT_SECRET = os.environ.get('IMGUR_CLIENT_SECRET', '4f9584bae90e4087a2857da6cb28f0412cc0b403')
-    IMGUR_ACCESS_TOKEN = os.environ.get('IMGUR_ACCESS_TOKEN', 'seu_access_token')
 
     # Configurações do YOLO (com fallback para download)
     YOLO_WEIGHTS_DIR = Path(__file__).resolve().parent.parent / 'model_weights'
@@ -46,6 +57,13 @@ class Config:
         # Configuração de pastas
         os.makedirs(cls.UPLOAD_FOLDER, exist_ok=True)
         cls.YOLO_WEIGHTS_DIR.mkdir(exist_ok=True)
+        
+        # Log de configuração do banco de dados (escondendo senha)
+        db_url_parts = cls.SQLALCHEMY_DATABASE_URI.split('@')
+        if len(db_url_parts) > 1:
+            # Esconde credenciais no log
+            safe_db_url = f"mssql+pyodbc://****:****@{db_url_parts[1]}"
+            app.logger.info(f"Usando banco de dados: {safe_db_url}")
         
         # Verificação/Download dos pesos YOLO
         cls._ensure_yolo_weights()
@@ -75,8 +93,9 @@ class Config:
             f"Conteúdo do diretório de pesos:\n{dir_contents}\n"
             f"Execute o script a partir de: {Path(__file__).parent}"
         )
-        logging.critical(error_msg)
-        raise FileNotFoundError(error_msg)
+        logging.warning(error_msg)
+        # Não levanta exceção para permitir que a aplicação inicie mesmo sem os pesos
+        # Isso é útil para debugging e configuração inicial no Render
 
 class ProductionConfig(Config):
     DEBUG_MODE = False
