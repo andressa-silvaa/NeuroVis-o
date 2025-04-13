@@ -1,24 +1,29 @@
 #!/bin/bash
-# Atualiza e instala dependências do sistema
-sudo apt-get update
-sudo apt-get install -y unixodbc unixodbc-dev gnupg2 curl
+# Script otimizado para o Render
 
-# Adiciona repositório da Microsoft e instala o driver ODBC
-curl https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/20.04/prod focal main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
+# Instala dependências do sistema
 sudo apt-get update
-sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
+sudo apt-get install -y unixodbc unixodbc-dev gcc g++
 
-# Configura variáveis de ambiente para o driver
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-source ~/.bashrc
+# Baixa e instala o pacote MS ODBC Driver diretamente (sem usar repositório)
+curl -O https://packages.microsoft.com/keys/microsoft.asc
+sudo apt-key add microsoft.asc
+curl -O https://packages.microsoft.com/config/ubuntu/20.04/prod.list
+sudo mv prod.list /etc/apt/sources.list.d/mssql-release.list
+sudo apt-get update
+sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
+
+# Configura variáveis de ambiente
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
+echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/mssql-tools/lib"' >> ~/.bash_profile
+source ~/.bash_profile
+
+# Verifica a instalação
+odbcinst -q -d -n "ODBC Driver 17 for SQL Server"
 
 # Instala dependências do Python
 pip install --upgrade pip
-pip install -r requirements.txt gunicorn
-
-# Verifica a instalação do driver
-odbcinst -q -d -n "ODBC Driver 17 for SQL Server"
+pip install -r requirements.txt
 
 # Inicia a aplicação
-gunicorn --bind 0.0.0.0:$PORT --workers 4 app:app
+gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 app:app
