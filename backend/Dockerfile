@@ -29,5 +29,5 @@ RUN pip install -r requirements.txt
 # Expõe a porta do Render
 EXPOSE 10000
 
-# Comando de entrada para o Gunicorn
+
 CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "4", "app:app"]
