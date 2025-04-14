@@ -9,7 +9,6 @@ from flask_cors import CORS
 from sqlalchemy import text
 
 def configure_logging():
-    """Configuração centralizada de logging"""
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -20,26 +19,27 @@ def configure_logging():
     )
     return logging.getLogger(__name__)
 
+def get_allowed_origins():
+    allowed_origins = os.environ.get('ALLOWED_ORIGINS')
+    if allowed_origins:
+        return [origin.strip() for origin in allowed_origins.split(',')]
+    return ["http://localhost:4200"]
+
 def create_app(config_class=ProductionConfig):
-    """Factory principal da aplicação Flask"""
     app = Flask(__name__)
-    
-    # Carrega configurações
     app.config.from_object(config_class)
-    config_class.init_app(app)  # Inicializa configurações adicionais
-    
-    # Configura CORS
+    config_class.init_app(app)
+
+    # ✅ CORS com origens seguras e explícitas
     CORS(app, supports_credentials=True, resources={
-        r"/api/*": {
-            "origins": os.environ.get('ALLOWED_ORIGINS', 'http://localhost:4200,https://neuro-vis-o.vercel.app,https://neurovis-o.onrender.com').split(',')
-        }
+        r"/api/*": {"origins": get_allowed_origins()}
     })
-    
+
     logger = configure_logging()
     logger.info(f"Iniciando aplicação no ambiente: {config_class.__name__}")
-    
+    logger.info(f"CORS habilitado para: {get_allowed_origins()}")
+
     try:
-        # Inicializa extensões
         db.init_app(app)
         jwt = JWTManager(app)
         logger.info("Extensões inicializadas com sucesso")
@@ -62,77 +62,58 @@ def create_app(config_class=ProductionConfig):
     return app
 
 def configure_jwt_handlers(jwt, logger):
-    """Configura os handlers de erro do JWT"""
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):
         logger.warning(f"Token expirado tentou acessar: {jwt_payload}")
-        return jsonify({
-            "status": "error",
-            "message": "Token expirado",
-            "code": 401
-        }), 401
-    
+        return jsonify({"status": "error", "message": "Token expirado", "code": 401}), 401
+
     @jwt.invalid_token_loader
     def invalid_token_callback(error):
         logger.warning(f"Token inválido recebido: {str(error)}")
-        return jsonify({
-            "status": "error",
-            "message": "Token de acesso inválido ou malformado",
-            "code": 401
-        }), 401
-    
+        return jsonify({"status": "error", "message": "Token inválido ou malformado", "code": 401}), 401
+
     @jwt.unauthorized_loader
     def missing_token_callback(error):
         logger.warning("Tentativa de acesso não autorizado")
-        return jsonify({
-            "status": "error",
-            "message": "Token de acesso não fornecido",
-            "code": 401
-        }), 401
+        return jsonify({"status": "error", "message": "Token não fornecido", "code": 401}), 401
 
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload):
         return False
 
 def register_blueprints(app, logger):
-    """Registra todos os blueprints da aplicação"""
     try:
         from controllers.userController import user_bp
         from controllers.neuralNetworkController import neural_bp
-        
+
         app.register_blueprint(user_bp, url_prefix='/api/users')
         app.register_blueprint(neural_bp, url_prefix='/api/neural')
         logger.info("Blueprints registrados com sucesso")
     except ImportError as e:
-        logger.error(f"Falha ao importar blueprints: {str(e)}", exc_info=True)
+        logger.error(f"Erro ao importar blueprints: {str(e)}", exc_info=True)
         raise
     except Exception as e:
-        logger.error(f"Falha ao registrar blueprints: {str(e)}", exc_info=True)
+        logger.error(f"Erro ao registrar blueprints: {str(e)}", exc_info=True)
         raise
 
 def initialize_database(app, db, logger):
-    """Inicializa e verifica o banco de dados"""
     try:
-        # Importa modelos para garantir que as tabelas sejam criadas
         from models.userModel import User
         from models.imageModel import Image
         from models.ObjectRecognitionResultModel import ObjectRecognitionResult
-        
+
         db.create_all()
-        logger.info("Tabelas do banco de dados verificadas/criadas")
-        
-        # Testa a conexão com a sintaxe correta
+        logger.info("Tabelas verificadas/criadas")
+
         db.session.execute(text("SELECT 1"))
-        logger.info("Conexão com o banco de dados estabelecida com sucesso")
+        logger.info("Conexão com o banco de dados OK")
     except Exception as e:
-        logger.critical(f"Falha na inicialização do banco de dados: {str(e)}", exc_info=True)
+        logger.critical(f"Erro na inicialização do banco: {str(e)}", exc_info=True)
         raise
 
 def register_utility_endpoints(app, db, logger):
-    """Registra endpoints utilitários"""
     @app.route('/health')
     def health_check():
-        """Endpoint de verificação de saúde da aplicação"""
         status = {
             "status": "healthy",
             "timestamp": datetime.utcnow().isoformat(),
@@ -147,7 +128,6 @@ def register_utility_endpoints(app, db, logger):
 
     @app.route('/version')
     def version():
-        """Endpoint de versão da aplicação"""
         return jsonify({
             "name": "NeuroVision API",
             "version": "1.0.0",
@@ -155,21 +135,19 @@ def register_utility_endpoints(app, db, logger):
         })
 
 def test_database_connection(db):
-    """Testa a conexão com o banco de dados"""
     try:
         db.session.execute(text("SELECT 1"))
         return "connected"
     except Exception as e:
         return f"disconnected: {str(e)}"
 
-# Cria a aplicação usando a configuração apropriada
+# Início da aplicação
 app = create_app()
 
 if __name__ == "__main__":
-    # Configuração para produção no Render
-    port = int(os.environ.get("PORT", 10000))  # Render usa porta 10000 por padrão
+    port = int(os.environ.get("PORT", 10000))
     app.run(
-        host='0.0.0.0',  # Importante para aceitar conexões externas
+        host='0.0.0.0',
         port=port,
         debug=os.environ.get('DEBUG_MODE', 'False').lower() == 'true',
         threaded=True
