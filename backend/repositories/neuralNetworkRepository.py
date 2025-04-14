@@ -30,7 +30,7 @@ def save_recognition_result(
     total_time: float,
     confidence_avg: float,
     objects_count: int,
-    detection_details: str  # Parâmetro detection_details permanece
+    detection_details: list  # <- Aqui corrigido: espera lista, não string
 ) -> int:
     """
     Salva os resultados da análise com todas as novas métricas.
@@ -38,14 +38,14 @@ def save_recognition_result(
     try:
         new_result = ObjectRecognitionResult(
             ImageID=image_id,
-            RecognizedObjects=json.dumps(recognized_objects),
+            RecognizedObjects=json.dumps(recognized_objects),  # serializa lista
             ProcessedImagePath=processed_image_path,
             Accuracy=accuracy,
             InferenceTimeMs=inference_time,
-            TotalTimeMs=total_time,  # Salvando total_time
+            TotalTimeMs=total_time,
             ConfidenceAvg=confidence_avg,
             ObjectsCount=objects_count,
-            DetectionDetails=detection_details,  # Salvando detection_details
+            DetectionDetails=json.dumps(detection_details),  # <- serializa lista
             AnalyzedAt=datetime.utcnow()
         )
         db.session.add(new_result)

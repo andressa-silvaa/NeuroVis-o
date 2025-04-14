@@ -6,6 +6,7 @@ from typing import Dict, List
 from imgurpython import ImgurClient
 from imgurpython.helpers.error import ImgurClientError
 import cv2
+import json  # Importando json para serialização
 from config.config import Config
 from repositories.neuralNetworkRepository import save_image, save_recognition_result
 from services.detectObjectService import get_detection_results
@@ -39,7 +40,6 @@ class NeuralNetworkService:
             logger.error(error_msg)
             raise Exception(error_msg)
 
-
     def analyze_image(self, image_path: str, user_id: int, image_uuid: str = None) -> Dict:
         """
         Processa imagem completa: detecção, upload e salvamento.
@@ -62,16 +62,19 @@ class NeuralNetworkService:
 
                 image_id = save_image(user_id, image_url)
                 
+                # Serializando a lista 'detected_objects' em JSON antes de passar para a função de salvar
+                detected_objects_json = json.dumps(detected_objects)  # Serializa a lista de objetos para JSON
+
                 save_recognition_result(
                     image_id=image_id,
-                    recognized_objects=detected_objects,
+                    recognized_objects=detected_objects_json,  # Usando a versão serializada em JSON
                     processed_image_path=image_url,
                     accuracy=accuracy,
                     inference_time=raw_metrics.get('inference_time'),
                     total_time=raw_metrics.get('total_time'),  
                     confidence_avg=accuracy,
                     objects_count=len(detected_objects),
-                    detection_details=detected_objects
+                    detection_details=detected_objects_json  # Salvando o JSON aqui
                 )
 
                 metrics = {

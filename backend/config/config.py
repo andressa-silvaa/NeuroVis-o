@@ -37,7 +37,6 @@ class Config:
     # === Imgur ===
     IMGUR_CLIENT_ID = os.environ.get('IMGUR_CLIENT_ID', 'f74f3693feeb900')
     IMGUR_CLIENT_SECRET = os.environ.get('IMGUR_CLIENT_SECRET', '4f9584bae90e4087a2857da6cb28f0412cc0b403')
-    IMGUR_ACCESS_TOKEN = os.environ.get('IMGUR_ACCESS_TOKEN', 'seu_access_token')
 
     # === YOLO ===
     YOLO_WEIGHTS_DIR = Path(__file__).resolve().parent.parent / 'model_weights'
