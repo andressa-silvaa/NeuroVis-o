@@ -1,26 +1,40 @@
-FROM python:3.10-slim
+FROM python:3.10-slim as builder
 
-# Instala dependências do sistema
-RUN apt-get update && apt-get install -y \
-    curl \
+# Instala apenas as dependências essenciais do sistema
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
     libglib2.0-0 \
-    gcc \
-    g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Define o diretório de trabalho
+# Cria um usuário não-root para segurança
+RUN useradd -m appuser && mkdir /app && chown appuser:appuser /app
+USER appuser
 WORKDIR /app
 
-# Copia os arquivos do projeto
-COPY . .
+# Primeiro copia apenas os requirements para cachear as dependências
+COPY --chown=appuser:appuser requirements.txt .
 
-# Instala dependências Python
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Instala dependências Python (sem cache para reduzir tamanho)
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Expõe a porta padrão do Render
+# Copia o restante da aplicação
+COPY --chown=appuser:appuser . .
+
+# Porta que o Render espera (10000)
 EXPOSE 10000
 
-# Comando para iniciar a aplicação com Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "120", "app:app"]
+# Configuração otimizada do Gunicorn para o Render:
+# --preload: Carrega o app antes de forking workers
+# --timeout: Aumentado para 120s
+# --workers: 1 worker (adequado para plano básico)
+# --access-logfile: Habilita logs de acesso
+# --error-logfile: Habilita logs de erro
+CMD ["gunicorn", \
+    "--bind", "0.0.0.0:10000", \
+    "--workers", "1", \
+    "--timeout", "120", \
+    "--preload", \
+    "--access-logfile", "-", \
+    "--error-logfile", "-", \
+    "app:app"]
